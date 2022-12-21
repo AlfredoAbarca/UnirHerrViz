@@ -12,6 +12,12 @@ const cambio = (color) => {
 const delta = (i) => {
     n += i
     numero.html(n)
+    if (n=>5){
+        mas.classed("text-success", true)
+    }
+    if (n<=5){
+        mas.classed("text-success", false)
+    }
 }
 
 menos.on("click", () => delta(-1))
