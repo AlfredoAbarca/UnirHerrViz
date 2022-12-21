@@ -4,6 +4,7 @@ const numero=d3.select("#numero")
 //body.style('background-color','#F00')
 const menos = d3.select("#menos")
 const mas = d3.select("#mas")
+var n = 0
 
 const cambio = (color) => {
     body.style('background-color',color)
