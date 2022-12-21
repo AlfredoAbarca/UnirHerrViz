@@ -9,10 +9,10 @@ const cambio = (color) => {
     body.style('background-color',color)
 }
 
-const delta = (i) =>{
+const delta = (i) => {
     n += i
     numero.html(n)
 }
 
-menos.on("click",()=>delta(-1))
-mas.on("click",()=>delta(1))
+menos.on("click", () => delta(-1))
+mas.on("click", () => delta(1))
