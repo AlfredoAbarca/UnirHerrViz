@@ -50,7 +50,7 @@ dataset.then(function(data){
         
         const xaxis = d3.axisBottom()
             .ticks(d3.timeDay.every(30))
-            .tickFormat(d3.timeFormat('%Y %m %d'))
+            .tickFormat(d3.timeFormat('%Y-%m-%d'))
             .scale(xScale);
         
         svg.append("g")
