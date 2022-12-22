@@ -18,7 +18,7 @@ var svg = d3.select("#grafica")
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",
   // When reading the csv, I must format variables:
 function(d){
-    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Casos_Confirmados }
+    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Casos_Confirmados, Muertes : d.Muertes, Contagio : "Tasa de Contagio" }
   },
 
   // Now I can use this dataset:
