@@ -1,6 +1,6 @@
 //--------------------------Preparando el area del grafico a presentar------------------------------//
-const width = 1024;
-const height = 768;
+const width = 800;
+const height = 508;
 const margin = 5;
 const padding = 5;
 const adj = 30;
