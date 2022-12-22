@@ -53,27 +53,36 @@ dataset.then(function(data){
             .tickFormat(d3.timeFormat('%Y-%m-%d'))
             .scale(xScale);
         
-        svg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xaxis);
-        
-        svg.append("g")
-            .attr("class", "axis")
-            .call(yaxis);
 
     //-----------------------Dibujamos la linea de tendencia-------------------------//
+    const line = d3.line()
+    .x(function(d) { return xScale(d.date); })
+    .y(function(d) { return yScale(d.measurement); });
 
     let id = 0;
     const ids = function () {
         return "line-"+id++;
     }
-    
-    const line = d3.line()
-    .x(function(d) { return xScale(d.date); })
-    .y(function(d) { return yScale(d.measurement); });
 
-    const lines = svg.selectAll("lines")
+    //-----------Drawing--------------//
+    svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xaxis);
+
+svg.append("g")
+    .attr("class", "axis")
+    .call(yaxis)
+    .append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("dy", ".75em")
+    .attr("y", 6)
+    .style("text-anchor", "end")
+    .text("Frequency");
+
+
+ //----------------------------LINES-----------------------------//
+const lines = svg.selectAll("lines")
     .data(slices)
     .enter()
     .append("g");
@@ -81,6 +90,18 @@ dataset.then(function(data){
     lines.append("path")
     .attr("class", ids)
     .attr("d", function(d) { return line(d.values); });
+
+    lines.append("text")
+    .attr("class","serie_label")
+    .datum(function(d) {
+        return {
+            id: d.id,
+            value: d.values[d.values.length - 1]}; })
+    .attr("transform", function(d) {
+            return "translate(" + (xScale(d.value.date) + 10)  
+            + "," + (yScale(d.value.measurement) + 5 ) + ")"; })
+    .attr("x", 5)
+    .text(function(d) { return ("Serie ") + d.id; });
 
 
 
