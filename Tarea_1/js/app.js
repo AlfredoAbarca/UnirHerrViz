@@ -38,7 +38,7 @@ dataset.then(function(data){
             return timeConv(d.Fecha)}));
         yScale
         .domain([0, 5000000])
-        .range([50,1000000]);
+        .range([0,1000000]);
         
         
         //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
