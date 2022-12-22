@@ -44,7 +44,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 			.curve(d3.curveCardinal);
 
 
-		var svg = d3.select("id#grafica").append("svg").attr("id","svg").attr("height","100%").attr("width","100%");
+		var svg = d3.select("#grafica").append("svg").attr("id","svg").attr("height","100%").attr("width","100%");
 		var chartGroup = svg.append("g").attr("class","chartGroup").attr("transform","translate("+xNudge+","+yNudge+")");
 
 		chartGroup.append("path")
