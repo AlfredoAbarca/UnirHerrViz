@@ -4,7 +4,7 @@ const height = 500;
 const margin = 5;
 const padding = 5;
 const adj = 30;
-const svg = d3.select("#grafica")
+const svg = d3.select("div#grafica").append("svg")
 .attr("preserveAspectRatio", "xMinYMin meet")
 .attr("viewBox", "-"
       + adj + " -"
