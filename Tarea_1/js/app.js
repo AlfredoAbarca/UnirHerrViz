@@ -18,7 +18,8 @@ const svg = d3.select("#grafica")
 //----------------------Preparando la lectura y formato de los datos a presentar------------------------------//
 const timeConv = d3.timeParse("%Y-%m-%d")
 const load = async() => {
-data = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv")
+dataset = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv");
+dataset.then(function(data){
     const slices = data.columns.slice(1).map(function(id) {
         return {
             id: id,
@@ -26,9 +27,11 @@ data = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/
                 return{
                     Fecha: timeConv(d.Fecha),
                     measurement: +d[id]
-                }
+                };
             })
         }
+    
     });
-console.log(slices);}
+console.log(slices);
+})}
 load()
