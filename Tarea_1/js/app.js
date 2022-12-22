@@ -21,7 +21,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
+      .domain(d3.extent(data, function(d) { return d.Fecha; }))
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -29,7 +29,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
+      .domain([0, d3.max(data, function(d) { return +d.Muertes; })])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));
@@ -41,8 +41,8 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5)
       .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
+        .x(function(d) { return x(d.Fecha) })
+        .y(function(d) { return y(d.Muertes) })
         )
 
 })
