@@ -48,7 +48,7 @@ const yaxis = d3.axisLeft()
 
 const xaxis = d3.axisBottom()
     .ticks(d3.timeDay.every(1))
-    .tickFormat(d3.timeFormat('%y %m %d'))
+    .tickFormat(d3.timeFormat('%Y %m %d'))
     .scale(xScale);
 
 svg.append("g")
