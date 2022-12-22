@@ -2,7 +2,7 @@
 
 var margin = {top: 60, right: 30, bottom: 30, left: 60},
     width = 400 - margin.left - margin.right,
-    height = 200 - margin.top - margin.bottom;
+    height = 100 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 var svg = d3.select("#grafica")
