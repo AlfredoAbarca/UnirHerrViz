@@ -36,14 +36,6 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .call(d3.axisLeft(y));
 
     // Add the line
-    svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return x(d.Fecha) })
-        .y(function(d) { return y(d.Muertes) })
-        )
+
 
 })
