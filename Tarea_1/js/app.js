@@ -17,7 +17,7 @@ var svg = d3.select("#grafica")
           "translate(" + margin.left + "," + margin.top + ")");
 
 const x = d3.scaleLinear().range([0,width])
-const y = d3.scaleLinear().range([0,height])
+const y = d3.scaleLinear().range([height,0])
 
 // function for the y grid lines
 function make_y_axis() {
