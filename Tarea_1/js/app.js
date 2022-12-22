@@ -42,7 +42,7 @@ dataset.then(function(data){
         
         //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
         const yaxis = d3.axisLeft()
-            .ticks(5)
+            .ticks(10)
             .scale(yScale);
         
         const xaxis = d3.axisBottom()
