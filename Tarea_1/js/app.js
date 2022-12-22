@@ -5,7 +5,15 @@ const margin = 5;
 const padding = 5;
 const adj = 30;
 const svg = d3.select("#grafica")
-
+.attr("preserveAspectRatio", "xMinYMin meet")
+.attr("viewBox", "-"
+      + adj + " -"
+      + adj + " "
+      + (width + adj *3) + " "
+      + (height + adj*3))
+.style("padding", padding)
+.style("margin", margin)
+.classed("svg-content", true);
   
 //Read the data
 const load = async() => {
