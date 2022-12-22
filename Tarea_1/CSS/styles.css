@@ -19,3 +19,8 @@
     font-family: Georgia;
     font-size: 120%;
     }
+    /* LINE CHART */
+path {
+    fill: none;
+    stroke: #ed3700;
+    }

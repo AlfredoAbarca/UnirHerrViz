@@ -61,6 +61,20 @@ dataset.then(function(data){
         svg.append("g")
             .attr("class", "axis")
             .call(yaxis);
+
+            //-----------------------Dibujamos la linea de tendencia-------------------------//
+            const line = d3.line()
+    .x(function(d) { return xScale(d.date); })
+    .y(function(d) { return yScale(d.measurement); });
+
+    const lines = svg.selectAll("lines")
+    .data(slices)
+    .enter()
+    .append("g");
+
+    lines.append("path")
+    .attr("d", function(d) { return line(d.values); });
+    
 console.log(slices[1]);
 })
 
