@@ -21,9 +21,9 @@ var maxDate = new Date();
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv")
     .row(function(d) { return { Fecha: parseDate(d.Fecha), Casos_Confirmados: Number(d.Casos_Confirmados.trim().slice(1))}; })
     .get(function(error, rows) {
-	    max = d3.max(rows, function(d) { return d.price; });
-	    minDate = d3.min(rows, function(d) {return d.month; });
-		maxDate = d3.max(rows, function(d) { return d.month; });
+	    max = d3.max(rows, function(d) { return d.Casos_Confirmados; });
+	    minDate = d3.min(rows, function(d) {return d.Fecha; });
+		maxDate = d3.max(rows, function(d) { return d.Fecha; });
 
 
 		var y = d3.scaleLinear()
@@ -39,8 +39,8 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 		var xAxis = d3.axisBottom(x);
 
 		var line = d3.line()
-			.x(function(d){ return x(d.month); })
-			.y(function(d){ return y(d.price); })
+			.x(function(d){ return x(d.Fecha); })
+			.y(function(d){ return y(d.Casos_Confirmados); })
 			.curve(d3.curveCardinal);
 
 
