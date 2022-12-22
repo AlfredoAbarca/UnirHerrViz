@@ -2,7 +2,7 @@
 const width = 960;
 const height = 500;
 const margin = 5;
-const padding = 5;
+const padding = 1000;
 const adj = 30;
 const svg = d3.select("#grafica")
 .attr("preserveAspectRatio", "xMinYMin meet")
