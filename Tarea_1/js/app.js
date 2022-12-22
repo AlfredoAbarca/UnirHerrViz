@@ -2,7 +2,7 @@
 const width = 960;
 const height = 500;
 const margin = 5;
-const padding = 1;
+const padding = 5;
 const adj = 30;
 const svg = d3.select("#grafica")
 .attr("preserveAspectRatio", "xMinYMin meet")
@@ -57,6 +57,15 @@ svg.append("g")
     .attr("class", "axis")
     .call(yaxis);
 })
+
+const yaxis = d3.axisLeft()
+    .ticks((slices[0].values).length)
+    .scale(yScale);
+
+const xaxis = d3.axisBottom()
+    .ticks(d3.timeDay.every(1))
+    .tickFormat(d3.timeFormat('%b %d'))
+    .scale(xScale);
 
 }
 
