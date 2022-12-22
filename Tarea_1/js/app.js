@@ -32,6 +32,6 @@ dataset.then(function(data){
         }
     
     });
-console.log(slices(1));
+console.log(slices[1]);
 })}
 load()
