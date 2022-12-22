@@ -15,14 +15,14 @@ var svg = d3.select("#grafica")
 
 
 
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/test.csv",
+data = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/test.csv",
   // When reading the csv, I must format variables:
 function(d){
     return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Muertes : d.Muertes }
-  },
+  })
 
   // Now I can use this dataset:
-  function(data) {
+functionf(data) {
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) {return d.Fecha; }))
@@ -49,4 +49,5 @@ function(d){
         .y(function(d) { return y(d.Muertes) })
         )
 
-})
+}
+functionf(data);
