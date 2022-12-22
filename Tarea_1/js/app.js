@@ -36,7 +36,7 @@ dataset.then(function(data){
         const yScale = d3.scaleLinear().rangeRound([height, 0]);
         xScale.domain(d3.extent(data, function(d){
             return timeConv(d.Fecha)}));
-        yScale.domain([(0), d3.max(slice[1], function(c) {
+        yScale.domain([(0), d3.max(slices, function(c) {
             return d3.max(c.values, function(d) {
                 return d.measurement + 4; });
                 })
