@@ -64,10 +64,7 @@ dataset.then(function(data){
 
     //-----------------------Dibujamos la linea de tendencia-------------------------//
 
-    let id = 0;
-const ids = function () {
-    return "line-"+id++;
-}
+
     const line = d3.line()
     .x(function(d) { return xScale(d.date); })
     .y(function(d) { return yScale(d.measurement); });
@@ -78,7 +75,13 @@ const ids = function () {
     .append("g");
 
     lines.append("path")
+    .attr("class", ids)
     .attr("d", function(d) { return line(d.values); });
+
+    let id = 0;
+    const ids = function () {
+        return "line-"+id++;
+    }
 
 console.log(slices[1]);
 })
