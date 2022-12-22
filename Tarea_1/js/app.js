@@ -36,14 +36,16 @@ dataset.then(function(data){
         const yScale = d3.scaleLinear().rangeRound([height, 0]);
         xScale.domain(d3.extent(data, function(d){
             return timeConv(d.Fecha)}));
-        yScale
-        .domain([0, 5000000])
-        .range([0,1000000]);
+        yScale.domain([(0), d3.max(slices, function(c) {
+            return d3.max(c.values, function(d) {
+                return d.measurement + 4; });
+                })
+            ]);
         
         
         //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
         const yaxis = d3.axisLeft()
-            .ticks(10)
+            .ticks(5)
             .scale(yScale);
         
         const xaxis = d3.axisBottom()
