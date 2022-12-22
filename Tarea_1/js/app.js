@@ -23,7 +23,7 @@ function(d){
 
   // Now I can use this dataset:
   function(data) {
-    console.log(data)
+    console.log(d.Fecha)
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.Fecha; }))
