@@ -1,7 +1,11 @@
+const graf = d3.select("#grafica")
+
+
 // set the dimensions and margins of the graph
 var margin = {top: 10, right: 30, bottom: 30, left: 60},
     width = 460 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
+var parseDate = d3.timeParse("%Y-%m-%d");
 
 // append the svg object to the body of the page
 var svg = d3.select("#grafica")
@@ -12,40 +16,50 @@ var svg = d3.select("#grafica")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
+const x = d3.scaleLinear().range([0,width])
+const y = d3.scaleLinear().range([0,height])
+
+// function for the y grid lines
+function make_y_axis() {
+    return d3.svg.axis()
+        .scale(y)
+        .orient("left")
+        //.ticks(5)
+  }
+  
 //Read the data
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/All_MX_Covid.csv",
+const load = async() => {
+data = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/All_MX_Covid.csv")
+    console.log(data);
 
-  // When reading the csv, I must format variables:
-  function (d) {
-    return { date : d3.timeParse("%Y-%m-%d")(d.Last_Update), value : d.Deaths }
-  },
+  
+    //using imported data to define extent of x and y domains
+    x.domain([0,d3.max(data, (d) => d.Last_Update)]);
+    y.domain([0,d3.max(data, (d) => d.Deaths)]);
 
-  // Now I can use this dataset:
-  function(data) {
-
-    // Add X axis --> it is a date format
-    var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
-      .range([ 0, width ]);
-    svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-
-    // Add Y axis
-    var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.value; })])
-      .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
-
-    // Add the line
+    render(data)
+  
+  // Draw the y Grid lines
+      svg.append("g")            
+          .attr("class", "grid")
+          .call(make_y_axis()
+              .tickSize(-width, 0, 0)
+              .tickFormat("")
+          )
+    
     svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
-        )
-    })
+        .datum(data)
+        .attr("class", "line")
+        .attr("d", line);
+}
+
+const render = (data) => {
+    svg
+    .data
+    .enter()
+    .append("line")
+    .attr("cx", (d) => x(d.Last_Update))
+    .attr("cy", (d) => y(d.Deaths))
+
+}
+load()
