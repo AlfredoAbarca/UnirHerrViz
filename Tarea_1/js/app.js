@@ -14,7 +14,6 @@ const svg = d3.select("#grafica")
 .style("padding", padding)
 .style("margin", margin)
 .classed("svg-content", true);
-  
 //----------------------Preparando la lectura y formato de los datos a presentar------------------------------//
 const timeConv = d3.timeParse("%Y-%m-%d")
 const load = async() => {
@@ -30,39 +29,38 @@ dataset.then(function(data){
                 };
             })
         }
-        //------------------------Preparacion de las escalas del grafico a mostrar----------------------------------//
-const xScale = d3.scaleTime().range([0,width]);
-const yScale = d3.scaleLinear().rangeRound([height, 0]);
-xScale.domain(d3.extent(data, function(d){
-    return timeConv(d.Fecha)}));
-yScale.domain([(0), d3.max(slices, function(c) {
-    return d3.max(c.values, function(d) {
-        return d.measurement + 4; });
-        })
-    ]);
-
-//-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
-const yaxis = d3.axisLeft()
-    .ticks((slices[1].values).length)
-    .scale(yScale);
-
-const xaxis = d3.axisBottom()
-    .ticks(d3.timeDay.every(1))
-    .tickFormat(d3.timeFormat('%Y %m %d'))
-    .scale(xScale);
-
-svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xaxis);
-
-svg.append("g")
-    .attr("class", "axis")
-    .call(yaxis);
-
-
 
 })
+        //------------------------Preparacion de las escalas del grafico a mostrar----------------------------------//
+        const xScale = d3.scaleTime().range([0,width]);
+        const yScale = d3.scaleLinear().rangeRound([height, 0]);
+        xScale.domain(d3.extent(data, function(d){
+            return timeConv(d.Fecha)}));
+        yScale.domain([(0), d3.max(slices, function(c) {
+            return d3.max(c.values, function(d) {
+                return d.measurement + 4; });
+                })
+            ]);
+        
+        
+        //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
+        const yaxis = d3.axisLeft()
+            .ticks((slices[1].values).length)
+            .scale(yScale);
+        
+        const xaxis = d3.axisBottom()
+            .ticks(d3.timeDay.every(1))
+            .tickFormat(d3.timeFormat('%Y %m %d'))
+            .scale(xScale);
+        
+        svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xaxis);
+        
+        svg.append("g")
+            .attr("class", "axis")
+            .call(yaxis);
 console.log(slices[1]);
 })
 
