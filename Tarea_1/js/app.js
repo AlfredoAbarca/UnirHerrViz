@@ -1,114 +1,69 @@
-//--------------------------Preparando el area del grafico a presentar------------------------------//
-const width = 960;
-const height = 500;
-const margin = 5;
-const padding = 5;
-const adj = 30;
-const svg = d3.select("#grafica").append("svg")
-.attr("preserveAspectRatio", "xMinYMin meet")
-.attr("viewBox", "-"
-      + adj + " -"
-      + adj + " "
-      + (width + adj *3) + " "
-      + (height + adj*3))
-.style("padding", padding)
-.style("margin", margin)
-.classed("svg-content", true);
-//----------------------Preparando la lectura y formato de los datos a presentar------------------------------//
-const timeConv = d3.timeParse("%Y-%m-%d")
-const load = async() => {
-dataset = d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv");
-dataset.then(function(data){
-    const slices = data.columns.slice(1).map(function(id) {
-        return {
-            id: id,
-            values: data.map(function(d){
-                return{
-                    Fecha: timeConv(d.Fecha),
-                    measurement: +d[id]
-                };
-            })
-        }
 
-})
-        //------------------------Preparacion de las escalas del grafico a mostrar----------------------------------//
-        const xScale = d3.scaleTime().range([0,width]);
-        const yScale = d3.scaleLinear().rangeRound([height, 0]);
-        xScale.domain(d3.extent(data, function(d){
-            return timeConv(d.Fecha)}));
-        yScale.domain([(0), d3.max(slices, function(c) {
-            return d3.max(c.values, function(d) {
-                return d.measurement + 4; });
-                })
-            ]);
-        
-        
-        //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
-        const yaxis = d3.axisLeft()
-            .ticks(10)
-            .scale(yScale);
-        
-        const xaxis = d3.axisBottom()
-            .ticks(d3.timeDay.every(30))
-            .tickFormat(d3.timeFormat('%Y-%m-%d'))
-            .scale(xScale);
-        
+var parseDate = d3.timeParse("%m/%d/%Y");
 
-    //-----------------------Dibujamos la linea de tendencia-------------------------//
-    const line = d3.line()
-    .x(function(d) { return xScale(d.date); })
-    .y(function(d) { return yScale(d.measurement); });
+var margin = {left: 50, right: 20, top: 20, bottom: 50 };
 
-    let id = 0;
-    const ids = function () {
-        return "line-"+id++;
-    }
-
-    //-----------Drawing--------------//
-    svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xaxis);
-
-svg.append("g")
-    .attr("class", "axis")
-    .call(yaxis)
-    .append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("dy", ".75em")
-    .attr("y", 6)
-    .style("text-anchor", "end")
-    .text("Frequency");
+var width = 960 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
 
 
- //----------------------------LINES-----------------------------//
-const lines = svg.selectAll("lines")
-    .data(slices)
-    .enter()
-    .append("g");
+var max = 0;
 
-    lines.append("path")
-    .attr("class", ids)
-    .attr("d", function(d) { return line(d.values); });
+var xNudge = 50;
+var yNudge = 20;
 
-    lines.append("text")
-    .attr("class","serie_label")
-    .datum(function(d) {
-        return {
-            id: d.id,
-            value: d.values[d.values.length - 1]}; })
-    .attr("transform", function(d) {
-            return "translate(" + (xScale(d.value.date) + 10)  
-            + "," + (yScale(d.value.measurement) + 5 ) + ")"; })
-    .attr("x", 5)
-    .text(function(d) { return ("Serie ") + d.id; });
+var minDate = new Date();
+var maxDate = new Date();
 
 
 
-console.log(slices[1]);
-})
 
-};
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv");
+    .row(function(d) { return { Fecha: parseDate(d.Fecha), Casos_Confirmados: Number(d.Casos_Confirmados.trim().slice(1))}; })
+    .get(function(error, rows) {
+	    max = d3.max(rows, function(d) { return d.price; });
+	    minDate = d3.min(rows, function(d) {return d.month; });
+		maxDate = d3.max(rows, function(d) { return d.month; });
 
 
-load();
+		var y = d3.scaleLinear()
+					.domain([0,max])
+					.range([height,0]);
+
+		var x = d3.scaleTime()
+					.domain([minDate,maxDate])
+					.range([0,width]);
+
+		var yAxis = d3.axisLeft(y);
+
+		var xAxis = d3.axisBottom(x);
+
+		var line = d3.line()
+			.x(function(d){ return x(d.month); })
+			.y(function(d){ return y(d.price); })
+			.curve(d3.curveCardinal);
+
+
+		var svg = d3.select("id#grafica").append("svg").attr("id","svg").attr("height","100%").attr("width","100%");
+		var chartGroup = svg.append("g").attr("class","chartGroup").attr("transform","translate("+xNudge+","+yNudge+")");
+
+		chartGroup.append("path")
+			.attr("class","line")
+			.attr("d",function(d){ return line(rows); })
+
+
+		chartGroup.append("g")
+			.attr("class","axis x")
+			.attr("transform","translate(0,"+height+")")
+			.call(xAxis);
+
+		chartGroup.append("g")
+			.attr("class","axis y")
+			.call(yAxis);
+
+
+
+	});
+
+
+
