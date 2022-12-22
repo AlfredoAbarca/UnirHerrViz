@@ -43,7 +43,7 @@ yScale.domain([(0), d3.max(slices, function(c) {
 
 //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
 const yaxis = d3.axisLeft()
-    .ticks((slices[0].values).length)
+    .ticks((slices[1].values).length)
     .scale(yScale);
 
 const xaxis = d3.axisBottom()
@@ -51,7 +51,7 @@ const xaxis = d3.axisBottom()
     .tickFormat(d3.timeFormat('%y %m %d'))
     .scale(xScale);
 
-    svg.append("g")
+svg.append("g")
     .attr("class", "axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xaxis);
