@@ -18,7 +18,7 @@ var maxDate = new Date();
 
 
 
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv");
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv")
     .row(function(d) { return { Fecha: parseDate(d.Fecha), Casos_Confirmados: Number(d.Casos_Confirmados.trim().slice(1))}; })
     .get(function(error, rows) {
 	    max = d3.max(rows, function(d) { return d.price; });
