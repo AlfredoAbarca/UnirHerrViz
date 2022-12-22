@@ -61,9 +61,9 @@ svg.append("g")
     .call(yaxis);
 
 
-console.log(slices[1]);
-})
 
+})
+console.log(slices[1]);
 })
 
 };
