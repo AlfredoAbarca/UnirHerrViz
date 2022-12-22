@@ -1,5 +1,5 @@
 //--------------------------Preparando el area del grafico a presentar------------------------------//
-const width = 800;
+const width = 600;
 const height = 508;
 const margin = 5;
 const padding = 5;
@@ -74,7 +74,7 @@ dataset.then(function(data){
 
     lines.append("path")
     .attr("d", function(d) { return line(d.values); });
-    
+
 console.log(slices[1]);
 })
 
