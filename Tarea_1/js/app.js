@@ -33,8 +33,7 @@ dataset.then(function(data){
     
     });
 console.log(slices[1]);
-})}
-load()
+})
 
 //------------------------Preparacion de las escalas del grafico a mostrar----------------------------------//
 const xScale = d3.scaleTime().range([0,width]);
@@ -59,4 +58,12 @@ svg.append("g")
 svg.append("g")
     .attr("class", "axis")
     .call(yaxis);
+}
+
+
+load()
+
+
+
+
 
