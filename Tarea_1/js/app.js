@@ -13,11 +13,11 @@ var svg = d3.select("#grafica")
           "translate(" + margin.left + "," + margin.top + ")");
 
 //Read the data
-d3.csv("https://github.com/AlfredoAbarca/UnirHerrViz/blob/35719e24ded186a6730fc2f7b7d5910f475c0134/Tarea_1/All_MX_Covid.csv",
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/All_MX_Covid.csv",
 
   // When reading the csv, I must format variables:
   function (d) {
-    return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
+    return { date : d3.timeParse("%Y-%m-%d")(d.Last_Update), value : d.Deaths }
   },
 
   // Now I can use this dataset:

@@ -1,3 +1,4 @@
+FIPS,Admin2,Province_State,Country_Region,Last_Update,Lat,Long_,Confirmed,Deaths,Recovered,Active,Combined_Key,Incident_Rate,Case_Fatality_Ratio
 ,,Aguascalientes,Mexico,2021-01-02 05:22:33,21.8853,-102.2916,17021,1371,0,15650,"Aguascalientes, Mexico",1186.4341801224703,8.054755889783209
 ,,Baja California,Mexico,2021-01-02 05:22:33,30.8406,-115.2838,34889,5559,0,29330,"Baja California, Mexico",959.8422831310518,15.933388747169595
 ,,Baja California Sur,Mexico,2021-01-02 05:22:33,26.0444,-111.6661,17820,784,0,17036,"Baja California Sur, Mexico",2214.4678566635353,4.399551066217733
