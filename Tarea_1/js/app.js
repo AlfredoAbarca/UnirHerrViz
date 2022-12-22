@@ -37,8 +37,8 @@ dataset.then(function(data){
         xScale.domain(d3.extent(data, function(d){
             return timeConv(d.Fecha)}));
         yScale
-        .domain([0, 5000000]);
-        .range([50,1000000])
+        .domain([0, 5000000])
+        .range([50,1000000]);
         
         
         //-------------------------Preparacion de la graduacion de los ejes para nuestra grafica------------------//
