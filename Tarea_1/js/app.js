@@ -27,7 +27,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
     // Add X axis --> it is a date format
     const x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.Fecha; }))
-      .ticks(d3.timeDate.every(30))
+      .ticks(30)
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", `translate(0, ${height})`)
