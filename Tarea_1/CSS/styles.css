@@ -17,8 +17,9 @@
     .axis text {
     fill: #2b2929;
     font-family: Georgia;
-    font-size: 120%;
+    font-size: 80%;
     }
+
     /* LINE CHART */
 path {
     fill: none;

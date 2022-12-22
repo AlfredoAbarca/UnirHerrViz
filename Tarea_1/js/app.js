@@ -62,8 +62,13 @@ dataset.then(function(data){
             .attr("class", "axis")
             .call(yaxis);
 
-            //-----------------------Dibujamos la linea de tendencia-------------------------//
-            const line = d3.line()
+    //-----------------------Dibujamos la linea de tendencia-------------------------//
+
+    let id = 0;
+const ids = function () {
+    return "line-"+id++;
+}
+    const line = d3.line()
     .x(function(d) { return xScale(d.date); })
     .y(function(d) { return yScale(d.measurement); });
 
