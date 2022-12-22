@@ -34,7 +34,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 
     // Add Y axis
     const y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.Muertes; })])
+      .domain([0, 400000])
       .range([ height, 0 ]);
     svg.append("g")
       .call(d3.axisLeft(y));
