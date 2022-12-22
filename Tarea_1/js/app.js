@@ -49,7 +49,7 @@ dataset.then(function(data){
             .scale(yScale);
         
         const xaxis = d3.axisBottom()
-            .ticks(d3.timeDay.every(1))
+            .ticks(d3.timeDay.every(30))
             .tickFormat(d3.timeFormat('%Y %m %d'))
             .scale(xScale);
         
