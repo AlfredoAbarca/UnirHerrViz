@@ -17,5 +17,4 @@ var svg = d3.select("#grafica")
 
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/test.csv")
   // When reading the csv, I must format variables:
-
-.get(function(data){console.log(data)})
+.then(function(data){console.log(data)})
