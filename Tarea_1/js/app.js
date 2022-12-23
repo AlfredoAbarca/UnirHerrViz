@@ -40,7 +40,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .call(d3.axisLeft(y));
 
   // This allows to find the closest X index of the mouse:
-  var bisect = d3.bisector(function(d) { return d.x; }).left;
+  var bisect = d3.bisector(function(d) { return d.Fecha; }).left;
 
   // Create the circle that travels along the curve of chart
   var focus = svg
