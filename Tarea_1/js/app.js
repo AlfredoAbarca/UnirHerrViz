@@ -210,7 +210,7 @@ svg.selectAll("mybar")
   .data(data)
   .join("rect")
     .attr("x", d => x(d.Fecha))
-    .attr("width", x.bandwidth())
+    .attr("width", 10)
     .attr("fill", "#69b3a2")
     // no bar at the beginning thus:
     .attr("height", d => height - y(0)) // always equal to 0
