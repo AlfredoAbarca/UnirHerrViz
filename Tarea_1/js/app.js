@@ -208,22 +208,21 @@ const hideTooltip = function(event,d) {
 // Bars
 svg.selectAll("mybar")
   .data(data)
-  .enter()
-  .append("rect")
-    .attr("x", function(d) { return x(d.Fecha); })
-    .attr("width", 50)
+  .join("rect")
+    .attr("x", d => x(d.Fecha))
+    .attr("width", x.bandwidth())
     .attr("fill", "#69b3a2")
     // no bar at the beginning thus:
-    .attr("height", function(d) { return height - y(0); }) // always equal to 0
-    .attr("y", function(d) { return y(0); })
+    .attr("height", d => height - y(0)) // always equal to 0
+    .attr("y", d => y(0))
 
 // Animation
 svg.selectAll("rect")
   .transition()
   .duration(800)
-  .attr("y", function(d) { return y(d.Casos_Confirmados); })
-  .attr("height", function(d) { return height - y(d.Casos_Confirmados); })
-  .delay(function(d,i){console.log(i) ; return(i*100)})
+  .attr("y", d => y(d.Casos_Confirmados))
+  .attr("height", d => height - y(d.Casos_Confirmados))
+  .delay((d,i) => {console.log(i); return i*100})
 
 });
 }
