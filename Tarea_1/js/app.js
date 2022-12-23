@@ -30,6 +30,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", `translate(0, ${height})`)
+      .text("Fecha")
       .call(d3.axisBottom(x));
 
     // Add Y axis
@@ -37,6 +38,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .domain([0, 400000])
       .range([ height, 0 ]);
     svg.append("g")
+    .text ("Defunciones")
       .call(d3.axisLeft(y));
 
  
