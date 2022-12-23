@@ -90,9 +90,9 @@ function mouseover() {
 function mousemove() {
  // recover coordinate we need
  var x0 = x.invert(d3.pointer(event, this)[0]);
- console.log(x0)
  var i = bisect(data, x0, 1);
  selectedData = data[i]
+ console.log(selectedData)
  focus
    .attr("cx", x(selectedData.x))
    .attr("cy", y(selectedData.y))
