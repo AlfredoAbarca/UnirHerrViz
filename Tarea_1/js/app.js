@@ -88,8 +88,8 @@ function mouseover() {
  focusText.style("opacity",1)
 }
 
-function mousemove(data) {
- // recover coordinate we need
+function mousemove() {
+ // recover coordinate we nee
  var x0 = d3.pointer(data.pageX)[0];
  var i = bisect(data, x0, 1);
  selectedData = data[i]
