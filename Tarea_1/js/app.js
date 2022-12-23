@@ -24,11 +24,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
   // Now I can use this dataset:
   function(data) {
 
-    svg.append("text")      // text label for the x axis
-        .attr("x", 400 )
-        .attr("y",  610 )
-        .style("text-anchor", "middle")
-        .text("Fecha");
+
 
     // Add X axis --> it is a date format
     const x = d3.scaleTime()
@@ -36,15 +32,19 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .range([ 0, width ]);
     svg.append("g")
       .attr("transform", `translate(0, ${height})`)
-      .text("Fecha")
       .call(d3.axisBottom(x));
+
+      svg.append("text")      // text label for the x axis
+      .attr("x", 400 )
+      .attr("y",  610 )
+      .style("text-anchor", "middle")
+      .text("Fecha");
 
     // Add Y axis
     const y = d3.scaleLinear()
       .domain([0, 400000])
       .range([ height, 0 ]);
     svg.append("g")
-    .text ("Defunciones")
       .call(d3.axisLeft(y));
 
  
