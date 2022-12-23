@@ -209,7 +209,7 @@ const hideTooltip = function(event,d) {
 svg.selectAll("mybar")
   .data(data)
   .join("rect")
-    .attr("x", d => x(d.Fecha))
+    .attr("x", d => x(d.Casos_Confirmados))
     .attr("width", 10)
     .attr("fill", "#69b3a2")
     // no bar at the beginning thus:
