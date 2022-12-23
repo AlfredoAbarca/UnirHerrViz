@@ -91,12 +91,13 @@ function mousemove() {
  // recover coordinate we need
  var x0 = x.invert(d3.pointer(event, this)[0]);
  var i = bisect(data, x0, 1);
+ const formato = d3.format(",2.r");
  selectedData = data[i]
  focus
    .attr("cx", x(selectedData.Fecha))
    .attr("cy", y(selectedData.Muertes))
  focusText
-   .html("Defunciones:" + d3.format(",2.r")(selectedData.Muertes))
+   .html("Defunciones:" + formato(selectedData.Muertes))
    .attr("x", x(selectedData.Fecha)+15)
    .attr("y", y(selectedData.Muertes))
  }
