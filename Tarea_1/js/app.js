@@ -157,7 +157,7 @@ function(data) {
 const x = d3.scaleTime()
 .domain(d3.extent(data, function(d) { return d.Fecha; }))
 .range([ 0, width ])
-.paddin(0.2);
+.padding(0.2);
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x));
