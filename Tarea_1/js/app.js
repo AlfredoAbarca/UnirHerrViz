@@ -7,7 +7,7 @@ var margin = {top: 10, right: 100, bottom: 50, left: 80},
 
 function Carga_Grafico_Defunciones(){
 // append the svg object to the body of the page
-var svg = d3.select("#grafica")
+var svg = d3.select("#grafica_def")
 .append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
