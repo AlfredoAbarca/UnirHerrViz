@@ -91,7 +91,7 @@ function mousemove() {
  // recover coordinate we need
  var x0 = x.invert(d3.pointer(event, this)[0]);
  var i = bisect(data, x0, 1);
- const formato = d3.format(",.2r");
+ const formato = d3.format(",.2");
  selectedData = data[i]
  focus
    .attr("cx", x(selectedData.Fecha))
