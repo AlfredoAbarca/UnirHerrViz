@@ -148,84 +148,108 @@ const svg = d3.select("#grafica_contagios")
         `translate(${margin.left}, ${margin.top})`);
 
 // get the data
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   function(d){
-    return { Fecha : d3.timeParse("%Y")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
-  }).then( 
-function(data) {
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   
+// When reading the csv, I must format variables:
+d => {
+    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Casos_Confirmados }
+  }).then(
 
-// X axis: scale and draw:
-const x = d3.scaleTime()
-.domain(data.map(d=>d.Fecha))
-.range([ 0, width ]);
+  // Now I can use this dataset:
+  function(data) {
 
-svg.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
+    // Add X axis --> it is a date format
+    const x = d3.scaleTime()
+      .domain(d3.extent(data, d => d.Fecha))
+      .range([ 0, width ]);
+    xAxis = svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x));
 
+    // Add Y axis
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => +d.Casos_Confirmados)])
+      .range([ height, 0 ]);
+    yAxis = svg.append("g")
+      .call(d3.axisLeft(y));
 
-// Y axis: scale and draw:
-const y = d3.scaleLinear()
-    .range([height, 0])
-    .domain([0,d3.max(data, function(d) { return d.Casos_Confirmados; })]);   // d3.hist has to be called before the Y axis obviously
-svg.append("g")
-    .call(d3.axisLeft(y));
+    // Add a clipPath: everything out of this area won't be drawn.
+    const clip = svg.append("defs").append("clipPath")
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", width )
+        .attr("height", height )
+        .attr("x", 0)
+        .attr("y", 0);
 
-// Add a tooltip div. Here I define the general feature of the tooltip: stuff that do not depend on the data point.
-// Its opacity is set to 0: we don't see it by default.
-const tooltip = d3.select("#grafica_contagios")
-  .append("div")
-  .style("opacity", 0)
-  .attr("class", "tooltip")
-  .style("background-color", "black")
-  .style("color", "white")
-  .style("border-radius", "5px")
-  .style("padding", "10px")
+    // Add brushing
+    const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
+        .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+        .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
 
-// A function that change this tooltip when the user hover a point.
-// Its opacity is set to 1: we can now see it. Plus it set the text and position of tooltip depending on the datapoint (d)
-const showTooltip = function(event,d) {
-  tooltip
-    .transition()
-    .duration(100)
-    .style("opacity", 1)
-  tooltip
-    .html("Range: " + d.x0 + " - " + d.x1)
-    .style("left", (event.x)/2-100 + "px")
-    .style("top", (event.y)/2 + "px")
-}
-const moveTooltip = function(event,d) {
-  tooltip
-  .style("left", (event.x)/2-100 + "px")
-  .style("top", (event.y)/2 + "px")
-}
-// A function that change this tooltip when the leaves a point: just need to set opacity to 0 again
-const hideTooltip = function(event,d) {
-  tooltip
-    .transition()
-    .duration(100)
-    .style("opacity", 0)
-}
+    // Create the area variable: where both the area and the brush take place
+    const area = svg.append('g')
+      .attr("clip-path", "url(#clip)")
 
-// Bars
-svg.selectAll("mybar")
-  .data(data)
-  .join("rect")
-    .attr("x", d => x(d.Fecha))
-    .attr("width", 10)
-    .attr("fill", "#69b3a2")
-    // no bar at the beginning thus:
-    .attr("height", d => height - y(0)) // always equal to 0
-    .attr("y", d => y(0))
+    // Create an area generator
+    const areaGenerator = d3.area()
+      .x(d => x(d.date))
+      .y0(y(0))
+      .y1(d => y(d.value))
 
-// Animation
-svg.selectAll("rect")
-  .transition()
-  .duration(100)
-  .attr("y", d => y(d.Casos_Confirmados))
-  .attr("height", d => height - y(d.Casos_Confirmados))
-  .delay((d,i) => {console.log(i); return i*100})
+    // Add the area
+    area.append("path")
+      .datum(data)
+      .attr("class", "myArea")  // I add the class myArea to be able to modify it later on.
+      .attr("fill", "#69b3a2")
+      .attr("fill-opacity", .3)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1)
+      .attr("d", areaGenerator )
 
-});
-}
+    // Add the brushing
+    area
+      .append("g")
+        .attr("class", "brush")
+        .call(brush);
+
+    // A function that set idleTimeOut to null
+    let idleTimeout
+    function idled() { idleTimeout = null; }
+
+    // A function that update the chart for given boundaries
+    function updateChart(event) {
+
+      // What are the selected boundaries?
+      extent = event.selection
+
+      // If no selection, back to initial coordinate. Otherwise, update X axis domain
+      if(!extent){
+        if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
+        x.domain([ 4,8])
+      }else{
+        x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+        area.select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+      }
+
+      // Update axis and area position
+      xAxis.transition().duration(1000).call(d3.axisBottom(x))
+      area
+          .select('.myArea')
+          .transition()
+          .duration(1000)
+          .attr("d", areaGenerator)
+    }
+
+    // If user double click, reinitialize the chart
+    svg.on("dblclick",function(){
+      x.domain(d3.extent(data, d => d.Fecha))
+      xAxis.transition().call(d3.axisBottom(x))
+      area
+        .select('.myArea')
+        .transition()
+        .attr("d", areaGenerator)
+    });
+
+})}
 Carga_Grafico_Contagios()
 Carga_Grafico_Defunciones()
