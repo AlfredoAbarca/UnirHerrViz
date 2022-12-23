@@ -47,7 +47,13 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
     svg.append("g")
       .call(d3.axisLeft(y));
 
- 
+      svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 – margin.left)
+      .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Defunciones");
 
 
   // This allows to find the closest X index of the mouse:
