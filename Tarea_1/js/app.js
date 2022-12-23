@@ -77,7 +77,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
  .attr('width', width)
  .attr('height', height)
  .on('mouseover', mouseover)
- .on('mousemove', (event,d)=> {console.log(d),mousemove(d)} )
+ .on('mousemove', (event,d)=> {console.log(d);mousemove(d);} )
  .on('mouseout', mouseout);
 
 
