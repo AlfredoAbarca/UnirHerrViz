@@ -24,6 +24,12 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
   // Now I can use this dataset:
   function(data) {
 
+    svg.append("text")      // text label for the x axis
+        .attr("x", 400 )
+        .attr("y",  610 )
+        .style("text-anchor", "middle")
+        .text("Fecha");
+
     // Add X axis --> it is a date format
     const x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.Fecha; }))
