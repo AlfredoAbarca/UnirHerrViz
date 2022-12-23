@@ -72,6 +72,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
   var focusText = svg
     .append('g')
     .append('text')
+      .style("font-size", "34px")
       .style("opacity", 0)
       .attr("text-anchor", "left")
       .attr("alignment-baseline", "middle")
