@@ -156,7 +156,8 @@ function(data) {
 // X axis: scale and draw:
 const x = d3.scaleTime()
 .domain(d3.extent(data, function(d) { return d.Fecha; }))
-.range([ 0, width ]);
+.range([ 0, width ])
+.paddin(0.2);
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x));
@@ -164,8 +165,8 @@ svg.append("g")
 
 // Y axis: scale and draw:
 const y = d3.scaleLinear()
-    .range([height, 0]);
-    y.domain([0,d3.max(data, function(d) { return d.Casos_Confirmados; })]);   // d3.hist has to be called before the Y axis obviously
+    .range([height, 0])
+    .domain([0,d3.max(data, function(d) { return d.Casos_Confirmados; })]);   // d3.hist has to be called before the Y axis obviously
 svg.append("g")
     .call(d3.axisLeft(y));
 
