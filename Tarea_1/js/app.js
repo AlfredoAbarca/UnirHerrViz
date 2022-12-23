@@ -116,7 +116,7 @@ function mousemove() {
    .attr("cx", x(selectedData.Fecha))
    .attr("cy", y(selectedData.Muertes))
  focusText
-   .html("<p>Defunciones:" + formato(selectedData.Muertes) + "<br />" + "Fecha:" + formatTime(selectedData.Fecha) + "</p>")
+   .html("Defunciones:" + formato(selectedData.Muertes) + "<br />" + "Fecha:" + formatTime(selectedData.Fecha))
    .attr("x", x(selectedData.Fecha)+15)
    .attr("y", y(selectedData.Muertes))
  }
