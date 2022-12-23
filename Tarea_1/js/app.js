@@ -159,10 +159,8 @@ const x = d3.scaleTime()
 .range([ 0, width ]);
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .attr("transform", "translate(-10,0)rotate(-45)")
-    .style("text-anchor", "end");
+    .call(d3.axisBottom(x));
+
 
 // Y axis: scale and draw:
 const y = d3.scaleLinear()
