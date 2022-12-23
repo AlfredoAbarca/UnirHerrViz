@@ -149,7 +149,7 @@ const svg = d3.select("#grafica_contagios")
 
 // get the data
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   function(d){
-    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
+    return { Fecha : d3.timeParse("%B %d, %Y")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
   }).then( 
 function(data) {
 
@@ -159,16 +159,10 @@ const x = d3.scaleTime()
 .range([ 0, width ]);
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
-
-// set the parameters for the histogram
-const histogram = d3.histogram()
-    .value(function(d) { return d.Fecha; })   // I need to give the vector of value
-    .domain(x.domain())  // then the domain of the graphic
-    .thresholds(x.ticks(200)); // then the numbers of bins
-
-// And apply this function to data to get the bins
-const bins = histogram(data);
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
 
 // Y axis: scale and draw:
 const y = d3.scaleLinear()
@@ -213,19 +207,25 @@ const hideTooltip = function(event,d) {
     .style("opacity", 0)
 }
 
-// append the bar rectangles to the svg element
+// Bars
+svg.selectAll("mybar")
+  .data(data)
+  .enter()
+  .append("rect")
+    .attr("x", function(d) { return x(d.Fecha); })
+    .attr("width", x.bandwidth())
+    .attr("fill", "#69b3a2")
+    // no bar at the beginning thus:
+    .attr("height", function(d) { return height - y(0); }) // always equal to 0
+    .attr("y", function(d) { return y(0); })
+
+// Animation
 svg.selectAll("rect")
-    .data(bins)
-    .join("rect")
-      .attr("x", 1)
-      .attr("transform", function(d) { return `translate(${x(d.x0)}, ${y(d.length)})`})
-      .attr("width", function(d) { return x(d.x1) - x(d.x0) -1 ; })
-      .attr("height", function(d) { return height - y(d.length); })
-      .style("fill", "#69b3a2")
-      // Show tooltip on hover
-      .on("mouseover", showTooltip )
-      .on("mousemove", moveTooltip )
-      .on("mouseleave", hideTooltip )
+  .transition()
+  .duration(800)
+  .attr("y", function(d) { return y(d.Casos_Confirmados); })
+  .attr("height", function(d) { return height - y(d.Casos_Confirmados); })
+  .delay(function(d,i){console.log(i) ; return(i*100)})
 
 });
 }
