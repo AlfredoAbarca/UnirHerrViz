@@ -154,7 +154,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 function(data) {
 
 // X axis: scale and draw:
-const x = d3.scaleBand()
+const x = d3.scaleTime()
 .domain(d3.extent(data, function(d) { return d.Fecha; }))
 .range([ 0, width ])
 .padding(.9);
