@@ -92,14 +92,13 @@ function mousemove() {
  var x0 = x.invert(d3.pointer(event, this)[0]);
  var i = bisect(data, x0, 1);
  selectedData = data[i]
- console.log(selectedData)
  focus
-   .attr("cx", x(selectedData.x))
-   .attr("cy", y(selectedData.y))
+   .attr("cx", x(selectedData.Fecha))
+   .attr("cy", y(selectedData.Muertes))
  focusText
-   .html("x:" + selectedData.x + "  -  " + "y:" + selectedData.y)
-   .attr("x", x(selectedData.x)+15)
-   .attr("y", y(selectedData.y))
+   .html("Fecha:" + selectedData.Fecha + "  -  " + "Defunciones:" + selectedData.Muertes)
+   .attr("x", x(selectedData.Fecha)+15)
+   .attr("y", y(selectedData.Muertes))
  }
 function mouseout() {
  focus.style("opacity", 0)
