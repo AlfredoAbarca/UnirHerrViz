@@ -115,7 +115,9 @@ function mousemove() {
  focus
    .attr("cx", x(selectedData.Fecha))
    .attr("cy", y(selectedData.Muertes))
- focusText.append("tspan")
+focusText
+    .html("")
+focusText.append("tspan")
    .text("Defunciones:" + formato(selectedData.Muertes))
    .attr("x", x(selectedData.Fecha)+15)
    .attr("y", y(selectedData.Muertes))
