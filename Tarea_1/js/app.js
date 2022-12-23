@@ -149,7 +149,7 @@ const svg = d3.select("#grafica_contagios")
 
 // get the data
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   function(d){
-    return { Fecha : d3.timeParse("%B %d, %Y")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
+    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
   }).then( 
 function(data) {
 
