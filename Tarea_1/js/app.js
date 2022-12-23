@@ -157,7 +157,7 @@ function(data) {
 const x = d3.scaleBand()
 .domain(d3.extent(data, function(d) { return d.Fecha; }))
 .range([ 0, width ])
-.padding(1);
+.padding(.9;
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x));
