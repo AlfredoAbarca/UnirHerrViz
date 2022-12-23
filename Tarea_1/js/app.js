@@ -163,7 +163,7 @@ svg.append("g")
 
 // set the parameters for the histogram
 const histogram = d3.histogram()
-    .value(function(d) { return d.Fecha; })   // I need to give the vector of value
+    .value(function(d) { return d.Casos_Confirmados; })   // I need to give the vector of value
     .domain(x.domain())  // then the domain of the graphic
     .thresholds(x.ticks(400)); // then the numbers of bins
 
