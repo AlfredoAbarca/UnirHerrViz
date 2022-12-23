@@ -152,7 +152,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
     return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
   }).then( 
 function(data) {
-console.log(data)
+
 // X axis: scale and draw:
 const x = d3.scaleTime()
 .domain(d3.extent(data, function(d) { return d.Fecha; }))
@@ -165,7 +165,7 @@ svg.append("g")
 const histogram = d3.histogram()
     .value(function(d) { return d.Casos_Confirmados; })   // I need to give the vector of value
     .domain(x.domain())  // then the domain of the graphic
-    .thresholds(x.ticks(100)); // then the numbers of bins
+    .thresholds(x.ticks(900)); // then the numbers of bins
 
 // And apply this function to data to get the bins
 const bins = histogram(data);
