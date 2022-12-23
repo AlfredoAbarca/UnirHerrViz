@@ -115,10 +115,14 @@ function mousemove() {
  focus
    .attr("cx", x(selectedData.Fecha))
    .attr("cy", y(selectedData.Muertes))
- focusText
-   .html("Defunciones:" + formato(selectedData.Muertes) + "<br />" + "Fecha:" + formatTime(selectedData.Fecha))
+ focusText.append("tspan")
+   .text("Defunciones:" + formato(selectedData.Muertes))
    .attr("x", x(selectedData.Fecha)+15)
    .attr("y", y(selectedData.Muertes))
+focusText.append("tspan")
+   .text("Fecha:" + formatTime(selectedData.Fecha))
+   .attr("x", x(selectedData.Fecha)+15)
+   .attr("y", y(selectedData.Muertes)+10)
  }
 function mouseout() {
  focus.style("opacity", 0)
