@@ -160,21 +160,21 @@ line
     .transition()
     .duration(1000)
     .attr("d", d3.line()
-      .x(function(d) { return x(d.date) })
-      .y(function(d) { return y(d.value) })
+      .x(function(d) { return x(d.Fecha) })
+      .y(function(d) { return y(d.Muertes) })
     )
 }
 
 // If user double click, reinitialize the chart
 svg.on("dblclick",function(){
-x.domain(d3.extent(data, function(d) { return d.date; }))
+x.domain(d3.extent(data, function(d) { return d.Fecha; }))
 xAxis.transition().call(d3.axisBottom(x))
 line
   .select('.line')
   .transition()
   .attr("d", d3.line()
-    .x(function(d) { return x(d.date) })
-    .y(function(d) { return y(d.value) })
+    .x(function(d) { return x(d.Fecha) })
+    .y(function(d) { return y(d.Muertes) })
 )
 });
 
