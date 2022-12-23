@@ -173,7 +173,7 @@ const bins = histogram(data);
 // Y axis: scale and draw:
 const y = d3.scaleLinear()
     .range([height, 0]);
-    y.domain(d3.extent(data, function(d) { return d.Casos_Confirmados; }));   // d3.hist has to be called before the Y axis obviously
+    y.domain([0,d3.max(data, function(d) { return d.Casos_Confirmados; })]);   // d3.hist has to be called before the Y axis obviously
 svg.append("g")
     .call(d3.axisLeft(y));
 
