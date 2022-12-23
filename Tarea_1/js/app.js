@@ -156,8 +156,8 @@ function(data) {
 // X axis: scale and draw:
 const x = d3.scaleTime()
 .domain(data.map(d=>d.Fecha))
-.range([ 0, width ])
-.padding(0.3);
+.range([ 0, width ]);
+
 svg.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(d3.axisBottom(x));
