@@ -49,7 +49,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
       .style("fill", "none")
       .attr("stroke", "black")
       .attr('r', 8.5)
-      .style("opacity", 0)
+      .style("opacity", 50)
 
   // Create the text that travels along the curve of chart
   var focusText = svg
