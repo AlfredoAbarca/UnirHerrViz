@@ -39,25 +39,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
     svg.append("g")
       .call(d3.axisLeft(y));
 
-      //---------------------//
-
-    // Add a clipPath: everything out of this area won't be drawn.
-    const clip = svg.append("defs").append("svg:clipPath")
-    .attr("id", "clip")
-    .append("svg:rect")
-    .attr("width", width )
-    .attr("height", height )
-    .attr("x", 0)
-    .attr("y", 0);
-
-// Add brushing
-const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
-    .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
-    .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
-
-// Create the line variable: where both the line and the brush take place
-const line = svg.append('g')
-  .attr("clip-path", "url(#clip)")
+ 
 
 
   // This allows to find the closest X index of the mouse:
@@ -127,7 +109,26 @@ function mouseout() {
  focusText.style("opacity", 0)
 }
 
-//--------------------------------//
+     //---------------------//
+
+    // Add a clipPath: everything out of this area won't be drawn.
+    const clip = svg.append("defs").append("svg:clipPath")
+    .attr("id", "clip")
+    .append("svg:rect")
+    .attr("width", width )
+    .attr("height", height )
+    .attr("x", 0)
+    .attr("y", 0);
+
+// Add brushing
+const brush = d3.brushX()                   // Add the brush feature using the d3.brush function
+    .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+    .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
+
+// Create the line variable: where both the line and the brush take place
+const line = svg.append('g')
+  .attr("clip-path", "url(#clip)")
+  
 // Add the brushing
 line
 .append("g")
