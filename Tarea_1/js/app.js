@@ -192,9 +192,9 @@ d => {
 
     // Create an area generator
     const areaGenerator = d3.area()
-      .x(d => x(d.date))
+      .x(d => x(d.Fecha))
       .y0(y(0))
-      .y1(d => y(d.value))
+      .y1(d => y(d.Casos_Confirmados))
 
     // Add the area
     area.append("path")
