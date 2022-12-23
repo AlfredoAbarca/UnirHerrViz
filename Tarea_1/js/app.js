@@ -77,7 +77,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
  .attr('width', width)
  .attr('height', height)
  .on('mouseover', mouseover)
- .on('mousemove', (event,d)=> {console.log(d);mousemove(d);} )
+ .on('mousemove', (event,d)=> {console.log(d.value);mousemove(d);} )
  .on('mouseout', mouseout);
 
 
@@ -89,7 +89,7 @@ function mouseover() {
 
 function mousemove(data) {
  // recover coordinate we need
- var x0 = d3.pointer(data)[0];
+ var x0 = d3.pointer(data.pageX)[0];
  var i = bisect(data, x0, 1);
  selectedData = data[i]
  focus
