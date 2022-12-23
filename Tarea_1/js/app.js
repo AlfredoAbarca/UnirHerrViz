@@ -36,7 +36,7 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
 
       svg.append("text")      // text label for the x axis
       .attr("x", 400 )
-      .attr("y",  310 )
+      .attr("y",  320 )
       .style("text-anchor", "middle")
       .text("Fecha");
 
