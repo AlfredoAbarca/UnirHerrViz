@@ -211,7 +211,7 @@ svg.selectAll("mybar")
   .enter()
   .append("rect")
     .attr("x", function(d) { return x(d.Fecha); })
-    .attr("width", x.bandwidth())
+    .attr("width", 50)
     .attr("fill", "#69b3a2")
     // no bar at the beginning thus:
     .attr("height", function(d) { return height - y(0); }) // always equal to 0
