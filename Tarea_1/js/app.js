@@ -219,7 +219,7 @@ svg.selectAll("mybar")
 // Animation
 svg.selectAll("rect")
   .transition()
-  .duration(800)
+  .duration(100)
   .attr("y", d => y(d.Casos_Confirmados))
   .attr("height", d => height - y(d.Casos_Confirmados))
   .delay((d,i) => {console.log(i); return i*100})
