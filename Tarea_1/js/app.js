@@ -89,7 +89,7 @@ function mouseover() {
 
 function mousemove() {
  // recover coordinate we need
- var x0 = d3.pointer(this);
+ var x0 = x.invert(d3.pointer(event, this)[0]);
  console.log(x0)
  var i = bisect(data, x0, 1);
  selectedData = data[i]
