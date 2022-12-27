@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
 
-var margin = {top: 10, right: 100, bottom: 50, left: 80},
+var margin = {top: 10, right: 100, bottom: 80, left: 80},
     width = 800 - margin.left - margin.right,
     height = 350 - margin.top - margin.bottom;
 
@@ -268,6 +268,7 @@ d => {
 
 function Carga_Grafico_Estados_Anio(){
     // append the svg object to the body of the page
+
 var svg = d3.select("#grafica_anio_edo_contagios")
 .append("svg")
   .attr("width", width + margin.left + margin.right)
@@ -276,83 +277,229 @@ var svg = d3.select("#grafica_anio_edo_contagios")
   .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
+
 //Read the data
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_x_AnioEstado.csv", function(data) {
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_x_AnioEstado.csv").then( function(data) {
+
+    console.log(data)
+const temp_data = data
+// List of groups (here I have one group per column)
+const allGroup = new Set(data.map(d => d.Year))
 
 
-    // List of groups (here I have one group per column)
-    const allGroup = new Set(data.map(d => d.Year))
+// add the options to the button
+d3.select("#select_year_Button")
+  .selectAll('myOptions')
+     .data(allGroup)
+  .enter()
+    .append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
 
-    // add the options to the button
-    d3.select("#select_year_Button")
-      .selectAll('myOptions')
-     	.data(allGroup)
-      .enter()
-    	.append('option')
-      .text(function (d) { return d; }) // text showed in the menu
-      .attr("value", function (d) { return d; }) // corresponding value returned by the button
+// A color scale: one color for each group
+const myColor = d3.scaleOrdinal()
+  .domain(allGroup)
+  .range(d3.schemeSet2);
 
-    // A color scale: one color for each group
-    const myColor = d3.scaleOrdinal()
-      .domain(allGroup)
-      .range(d3.schemeSet2);
+// Add X axis --> it is a date format
+const x = d3.scaleBand()
+.range([ 0, width ])
+.domain(data.map(d => d.Estado))
+.padding(0.2);
+svg.append("g")
+.attr("transform", `translate(0, ${height})`)
+.call(d3.axisBottom(x))
+.selectAll("text")
+  .attr("transform", "translate(-10,0)rotate(-45)")
+  .style("text-anchor", "end");
 
-    // Add X axis --> it is a date format
-    const x = d3.scaleLinear()
-      .domain(d3.extent(data, function(d) { return d.year; }))
-      .range([ 0, width ]);
-    svg.append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(x).ticks(7));
+  svg.append("text")      // text label for the x axis
+  .attr("x", 400 )
+  .attr("y",  330 )
+  .style("text-anchor", "middle")
+  .text("Estado");
 
-    // Add Y axis
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.n; })])
-      .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
+// Add Y axis
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, function(d) { return +d.Casos_Confirmados;})])
+  .range([ height, 0 ]);
+svg.append("g")
+  .call(d3.axisLeft(y));
 
-    // Initialize line with first group of the list
-    const line = svg
-      .append('g')
-      .append("path")
-        .datum(data.filter(function(d){return d.name=="Helen"}))
-        .attr("d", d3.line()
-          .x(function(d) { return x(d.year) })
-          .y(function(d) { return y(+d.n) })
-        )
-        .attr("stroke", function(d){ return myColor("valueA") })
-        .style("stroke-width", 4)
-        .style("fill", "none")
+  svg.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 0 - margin.left)
+  .attr("x",0 - (height / 2))
+  .attr("dy", "1em")
+  .style("text-anchor", "middle")
+  .text("Casos Confirmados");
 
-    // A function that update the chart
-    function update(selectedGroup) {
+    // ----------------
+  // Create a tooltip
+  // ----------------
+  const tooltip = d3.selectAll("#grafica_anio_edo_contagios")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
 
-      // Create new data with the selection?
-      const dataFilter = data.filter(function(d){return d.name==selectedGroup})
 
-      // Give these new data to update line
-      line
-          .datum(dataFilter)
-          .transition()
-          .duration(1000)
-          .attr("d", d3.line()
-            .x(function(d) { return x(d.year) })
-            .y(function(d) { return y(+d.n) })
-          )
-          .attr("stroke", function(d){ return myColor(selectedGroup) })
+  // Three function that change the tooltip when user hover / move / leave a cell
+  const mouseover = function(event, d) {
+    tooltip
+    .html('Casos: ' + d3.format(",")(d.Casos_Confirmados))
+    .style('opacity', 100);
+    d3.select(this).transition().attr('fill', "Black");
+
+  }
+  const mousemove = function(event, d) {
+    console.log(event.x)
+    tooltip
+           .style("left",((event.x)+50) + "px")
+           .style("top",((event.y)+30) + "px")
+  }
+  const mouseleave = function(event, d) {
+    tooltip
+      .style("opacity", 0)
+      const selectedGroup=d3.select("#select_year_Button").property("value")
+      if (selectedGroup==2020){
+        d3.select(this).transition().attr("fill", 'red');}
+        if (selectedGroup==2021){
+        d3.select(this).transition().attr("fill", 'blue');}
+        if (selectedGroup==2022){
+        d3.select(this).transition().attr("fill", 'green');}
+  }
+
+
+
+  const selectedOption = 2020
+  // run the updateChart function with this selected option
+  update(selectedOption)
+
+// A function that update the chart
+function update(selectedGroup) {
+data=temp_data;
+  // Create new data with the selection?
+  const dataFilter = data.filter(function(d){return d.Year==selectedGroup});
+  data=dataFilter;
+  // Give these new data to update line
+  // set the domains of the axes
+  x.domain(data.map(d => d.Estado));
+  //svg.call(d3.axisBottom(x))
+
+  y.domain([0, d3.max(data, function(d) { return +d.Casos_Confirmados;})]);
+  //svg.call(d3.axisLeft(y));
+  // create the bars
+  svg.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .transition().duration(1000)
+      .attr("x", function(d) { return x(d.Estado); })
+      .attr("y", function(d) { return y(d.Casos_Confirmados); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.Casos_Confirmados); });
+
+
+svg.selectAll(".bar")
+      .data(data)
+        .attr("class", "bar")
+        .transition().duration(1000)
+        .attr("x", function(d) { return x(d.Estado); })
+        .attr("y", function(d) { return y(d.Casos_Confirmados); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.Casos_Confirmados); });
+
+const rect = svg
+        .selectAll('.bar')
+        .data(data)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
+    bars=svg.selectAll(".bar").data(data)
+    if (selectedGroup==2020){
+    bars
+        .attr("fill", 'red');
     }
 
-    // When the button is changed, run the updateChart function
-    d3.select("#select_year_Button").on("change", function(event,d) {
-        // recover the option that has been chosen
-        const selectedOption = d3.select(this).property("value")
-        // run the updateChart function with this selected option
-        update(selectedOption)
-    })
+    if (selectedGroup==2021){
+    bars
+        .attr("fill", 'blue');}
+    if (selectedGroup==2022){
+    bars
+        .attr("fill", 'green');}
+        
+}
+
+// When the button is changed, run the updateChart function
+d3.select("#select_year_Button").on("change", function(event,d) {
+    // recover the option that has been chosen
+    const selectedOption = d3.select(this).property("value")
+    // run the updateChart function with this selected option
+    update(selectedOption)
+})
+
+
 
 })
 
+
+}
+
+function Carga_Grafico_Vacunas(){
+    // append the svg object to the body of the page
+const svg = d3.select("#grafica_vacunas")
+.append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",`translate(${margin.left},${margin.top})`);
+
+//Read the data
+d3.csv("https://github.com/AlfredoAbarca/UnirHerrViz/blob/main/Tarea_1/data/Covid_vaccinations_MX.csv",
+
+// When reading the csv, I must format variables:
+d => {
+  return {
+        Fecha: d3.timeParse("%Y-%m-%d")(d.Fecha),
+        Personas_1_Vacuna : d.Personas_1_Vacuna
+      }
+    }).then(
+
+// Now I can use this dataset:
+function(data) {
+
+// Add X axis --> it is a date format
+const x = d3.scaleTime()
+  .domain(d3.extent(data, d => d.Fecha))
+  .range([ 0, width ]);
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x));
+
+// Add Y axis
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, d => +d.Personas_1_Vacuna)])
+  .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+// Add the area
+svg.append("path")
+  .datum(data)
+  .attr("fill", "#cce5df")
+  .attr("stroke", "#69b3a2")
+  .attr("stroke-width", 1.5)
+  .attr("d", d3.area()
+    .x(d => x(d.Fecha))
+    .y0(y(0))
+    .y1(d => y(d.Personas_1_Vacuna))
+      )
+  })
 }
 Carga_Grafico_Contagios()
 Carga_Grafico_Defunciones()
+Carga_Grafico_Estados_Anio()
+Carga_Grafico_Vacunas()
