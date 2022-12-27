@@ -28,7 +28,6 @@ Year,Estado,Casos_Confirmados,Defunciones
 2020,Tabasco,43924,3196
 2020,Tamaulipas,39207,3274
 2020,Tlaxcala,10953,1408
-2020,Unknown,0,0
 2020,Veracruz,42967,6316
 2020,Yucatan,26597,2266
 2020,Zacatecas,20872,1749
@@ -61,7 +60,6 @@ Year,Estado,Casos_Confirmados,Defunciones
 2021,Tabasco,100351,2563
 2021,Tamaulipas,65043,3844
 2021,Tlaxcala,18693,1592
-2021,Unknown,0,0
 2021,Veracruz,81806,8777
 2021,Yucatan,48384,3457
 2021,Zacatecas,21949,1701
@@ -94,7 +92,6 @@ Year,Estado,Casos_Confirmados,Defunciones
 2022,Tabasco,73617,384
 2022,Tamaulipas,74843,1106
 2022,Tlaxcala,27118,124
-2022,Unknown,0,0
 2022,Veracruz,101728,1965
 2022,Yucatan,66263,1239
 2022,Zacatecas,37541,484
