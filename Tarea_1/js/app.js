@@ -533,7 +533,6 @@ svg.append("g")
     d3.select(this).transition().attr('fill', "Cyan")
   }
   const mousemove = function(event, d) {
-    console.log(event.x)
     tooltip
            .style("left",((event.x)+50) + "px")
            .style("top",((event.y)+30) + "px")
@@ -753,6 +752,94 @@ svg.append("path")
 
  Create_Html_Table("#Grafica5_Tabla",data,['Fecha','Personas_3_Dosis']);
   })}
+
+function Carga_Grafico_Movilidad(){
+// append the svg object to the body of the page
+const margin = {top: 30, right: 0, bottom: 40, left: 50},
+    width = 300 - margin.left - margin.right,
+    height = 310 - margin.top - margin.bottom;
+
+
+    const svg = d3.select("#grafica_movilidad")
+
+
+    //Read the data
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/MX_Region_Mobility_Report.csv",
+// When reading the csv, I must format variables:
+d => {
+    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Lugar : d.Lugar, Porcentaje: d.Porcentaje }
+  }).then( function(data) {
+
+  // group the data: I want to draw one line per group
+  const sumstat = d3.group(data, d => d.Lugar) // nest function allows to group the calculation per level of a factor
+  console.log(sumstat)
+
+  // What is the list of groups?
+  allKeys = new Set(data.map(d=>d.Lugar))
+
+  // Add an svg element for each group. The will be one beside each other and will go on the next row when no more room available
+  const svg = d3.select("#grafica_movilidad")
+    .selectAll("uniqueChart")
+    .data(sumstat)
+    .enter()
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            `translate(${margin.left},${margin.top})`);
+
+            //Add X Axis
+            const x = d3.scaleTime()
+            .domain(d3.extent(data, d => d.Fecha))
+            .range([ 0, width ]);
+            svg.append("g")
+              .attr("transform", `translate(0,${height})`)
+              .call(d3.axisBottom(x))
+              .selectAll("text")
+              .attr("transform", "translate(-10,0)rotate(-45)")
+              .style("text-anchor", "end");
+
+
+  //Add Y axis
+  const y = d3.scaleLinear()
+    .domain([-80, d3.max(data, function(d) { return +d.Porcentaje; })])
+    .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y).ticks(5));
+
+  // color palette
+  const color = d3.scaleOrdinal()
+    //.domain(allKeys)
+    .range(['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#a65628','#f781bf','#999999'])
+
+  // Draw the line
+  svg
+    .append("path")
+      .attr("fill", "none")
+      .attr("stroke", function(d){ return color(d[0]) })
+      .attr("stroke-width", 1.9)
+      .attr("d", function(d){
+        return d3.line()
+          .x(function(d) { return x(d.Fecha); })
+          .y(function(d) { return y(+d.Porcentaje); })
+          (d[1])
+      })
+
+  // Add titles
+  svg
+    .append("text")
+    .attr("text-anchor", "start")
+    .attr("y", -5)
+    .attr("x", 0)
+    .text(function(d){ return(d[0])})
+    .style("fill", function(d){ return color(d[0]) })
+
+    Create_Html_Table(Grafica7_Tabla,data,['Fecha','Lugar','Porcentaje'])
+
+})}
+
+
 function openTab(evt,ParentObject, TabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -822,6 +909,7 @@ document.getElementById("Grafica3_btn1").click();
 document.getElementById("Grafica4_btn1").click();
 document.getElementById("Grafica5_btn1").click();
 document.getElementById("Grafica6_btn1").click();
+document.getElementById("Grafica7_btn1").click();
 
 //Carga la informacion de cada uno de los graficos
 Carga_Grafico_Contagios()
@@ -830,3 +918,4 @@ Carga_Grafico_Estados_Anio()
 Carga_Grafico_Vacunas()
 Carga_Grafico_Vacunas_3dosis()
 Carga_Grafico_Estados_Def()
+Carga_Grafico_Movilidad()
