@@ -25,8 +25,30 @@
               
         </header>
         <main class="container pt-5">
-          <h4>Tendencia de casos confirmados por dia</h4>
-          <div id="grafica_contagios" class="svg-container"></div>
+
+          <!--Primer conjunto de tabs para la grafica de Casos confirmados por dia-->
+          <div id="Grafica1_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab1')" id="Grafica1_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab3')">Data Sources</button>
+          </div>
+          <!--Contenido de las diversas pestanas de la primer grafica -->
+          <div id="Grafica1_Tab1" class="tabcontent">
+            <h4>Tendencia de casos confirmados por dia</h4>
+            <div id="grafica_contagios" class="svg-container"></div>
+          </div>
+
+          <div id="Grafica1_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;">
+          <h3>Tabla de los datos</h3>
+          <div id="Grafica1_Tabla"></div>
+          </div>
+
+          <div id="Grafica1_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;">
+          <h3>Fuentes de datos</h3>
+          <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+          </div>
+
+
           <h4>Defunciones acumuladas</h4>
           <div id="grafica_def" class="svg-container"></div>
           <h4>Vacunas suministradas</h4>

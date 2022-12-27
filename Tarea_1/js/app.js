@@ -24,10 +24,11 @@ d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1
   }).then(
 
   // Now I can use this dataset:
+  
   function(data) {
 
 
-
+    
     // Add X axis --> it is a date format
     const x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.Fecha; }))
@@ -156,7 +157,7 @@ d => {
 
   // Now I can use this dataset:
   function(data) {
-
+    
     // Add X axis --> it is a date format
     const x = d3.scaleTime()
       .domain(d3.extent(data, d => d.Fecha))
@@ -263,7 +264,7 @@ d => {
         .transition()
         .attr("d", areaGenerator)
     });
-
+    Create_Html_Table("#Grafica1_Tabla",data,['Fecha','Casos_Confirmados']);
 })}
 
 function Carga_Grafico_Estados_Anio(){
@@ -499,6 +500,72 @@ svg.append("path")
       )
   })
 }
+
+function openTab(evt, TabName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+  
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+  
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+  
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(TabName).style.display = "block";
+    evt.currentTarget.className += " active";
+  }
+
+function Create_Html_Table(HtmlDiv_id,data, columns) {
+	var table = d3.select(HtmlDiv_id)
+        .append('table')
+	var thead = table.append('thead')
+	var	tbody = table.append('tbody');
+	// append the header row
+	thead.append('tr')
+	  .selectAll('th')
+	  .data(columns).enter()
+	  .append('th')
+	    .text(function (column) { return column; })
+        .style("border", "1px black solid")
+        .style("padding", "5px")
+        .style("background-color", "lightgray")
+        .style("font-weight", "bold")
+        .style("text-transform", "uppercase");
+
+	// create a row for each object in the data
+	var rows = tbody.selectAll('tr')
+	  .data(data)
+	  .enter()
+	  .append('tr');
+
+	// create a cell in each row for each column
+	var cells = rows.selectAll('td')
+	  .data(function (row) {
+	    return columns.map(function (column) {
+	      return {column: column, value: row[column]};
+	    });
+	  })
+	  .enter()
+	  .append('td')
+	    .text(function (d) { return d.value; })
+        .style("border", "1px black solid")
+        .style("padding", "5px");
+  return table;
+}
+
+
+
+//Seleccion de las tabs por defecto de las graficas
+document.getElementById("Grafica1_btn1").click();
+
+
 Carga_Grafico_Contagios()
 Carga_Grafico_Defunciones()
 Carga_Grafico_Estados_Anio()
