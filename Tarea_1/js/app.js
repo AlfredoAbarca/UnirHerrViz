@@ -476,6 +476,11 @@ const x = d3.scaleTime()
   svg.append("g")
     .attr("transform", `translate(0,${height})`)
     .call(d3.axisBottom(x));
+svg.append("text")      // text label for the x axis
+    .attr("x", 400 )
+    .attr("y",  330 )
+    .style("text-anchor", "middle")
+    .text("Mes");
 
 // Add Y axis
 const y = d3.scaleLinear()
@@ -483,6 +488,13 @@ const y = d3.scaleLinear()
   .range([ height, 0 ]);
   svg.append("g")
     .call(d3.axisLeft(y));
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Personas Vacunadas");
 
 // Add the area
 svg.append("path")
