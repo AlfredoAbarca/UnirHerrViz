@@ -458,7 +458,7 @@ const svg = d3.select("#grafica_vacunas")
   .attr("transform",`translate(${margin.left},${margin.top})`);
 
 //Read the data
-d3.csv("https://github.com/AlfredoAbarca/UnirHerrViz/blob/main/Tarea_1/data/Covid_vaccinations_MX.csv",
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/Covid_vaccinations_MX.csv",
 
 // When reading the csv, I must format variables:
 d => {
