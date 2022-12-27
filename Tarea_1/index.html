@@ -28,35 +28,96 @@
 
           <!--Primer conjunto de tabs para la grafica de Casos confirmados por dia-->
           <div id="Grafica1_Tab" class="tab">
-            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab1')" id="Grafica1_btn1">Grafica</button>
-            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab2')">Tabla</button>
-            <button class="tablinks" onclick="openTab(event, 'Grafica1_Tab3')">Data Sources</button>
-          </div>
-          <!--Contenido de las diversas pestanas de la primer grafica -->
-          <div id="Grafica1_Tab1" class="tabcontent">
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab1')" id="Grafica1_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab3')">Data Sources</button>
+
+                      <!--Contenido de las diversas pestanas de la primer grafica -->
+          <div id="Grafica1_Tab1" class="tabcontent" style="background-color: #ffffff;">
             <h4>Tendencia de casos confirmados por dia</h4>
             <div id="grafica_contagios" class="svg-container"></div>
           </div>
 
-          <div id="Grafica1_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;">
+          <div id="Grafica1_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
           <h3>Tabla de los datos</h3>
           <div id="Grafica1_Tabla"></div>
           </div>
 
-          <div id="Grafica1_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;">
+          <div id="Grafica1_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
           <h3>Fuentes de datos</h3>
           <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
           </div>
+          </div>
+
+          <!--Segundo conjunto de tabs para la grafica de Defunciones por dia-->
+          <div id="Grafica2_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event,'Grafica2_Tab', 'Grafica2_Tab1')" id="Grafica2_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica2_Tab', 'Grafica2_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica2_Tab', 'Grafica2_Tab3')">Data Sources</button>
+
+            <div id="Grafica2_Tab1" class="tabcontent" style="background-color: #ffffff;">
+              <h4>Tendencia de defunciones por dia</h4>
+              <div id="grafica_def" class="svg-container"></div>
+            </div>
+  
+            <div id="Grafica2_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Tabla de los datos</h3>
+            <div id="Grafica2_Tabla"></div>
+            </div>
+  
+            <div id="Grafica2_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Fuentes de datos</h3>
+            <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+            </div>
+          </div>
+
+          <!--Tercer conjunto de tabs para la grafica de Defunciones por dia-->
+          <div id="Grafica3_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event,'Grafica3_Tab', 'Grafica3_Tab1')" id="Grafica3_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica3_Tab', 'Grafica3_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica3_Tab', 'Grafica3_Tab3')">Data Sources</button>
+
+            <div id="Grafica3_Tab1" class="tabcontent" style="background-color: #ffffff;">
+              <h4>Vacunas suministradas</h4>
+              <div id="grafica_vacunas" class="svg-container"></div>
+            </div>
+  
+            <div id="Grafica3_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Tabla de los datos</h3>
+            <div id="Grafica3_Tabla"></div>
+            </div>
+  
+            <div id="Grafica3_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Fuentes de datos</h3>
+            <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+            </div>
+          </div>
+
+          <!--Cuarto conjunto de tabs para la grafica de Defunciones por dia-->
+          <div id="Grafica4_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event,'Grafica4_Tab', 'Grafica4_Tab1')" id="Grafica4_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica4_Tab', 'Grafica4_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica4_Tab', 'Grafica4_Tab3')">Data Sources</button>
+
+            <div id="Grafica4_Tab1" class="tabcontent" style="background-color: #ffffff;">
+              <h4>Casos confirmados por estado y por anio</h4>
+              <!-- Initialize a select button -->
+              <select id="select_year_Button"></select>
+              <div id="grafica_anio_edo_contagios" class="svg-container"></div>
+            </div>
+  
+            <div id="Grafica4_Tab2" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Tabla de los datos</h3>
+            <div id="Grafica4_Tabla"></div>
+            </div>
+  
+            <div id="Grafica4_Tab3" class="tabcontent" style= "height: 400px; overflow-y: scroll;width: 800px; white-space: nowrap; overflow-x: scroll;background-color: #ffffff;">
+            <h3>Fuentes de datos</h3>
+            <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+            </div>
+          </div>
 
 
-          <h4>Defunciones acumuladas</h4>
-          <div id="grafica_def" class="svg-container"></div>
-          <h4>Vacunas suministradas</h4>
-          <div id="grafica_vacunas" class="svg-container"></div>
-          <h4>Casos confirmados por estado y por anio</h4>
-          <!-- Initialize a select button -->
-          <select id="select_year_Button"></select>
-          <div id="grafica_anio_edo_contagios" class="svg-container"></div>
         </main>
         <script src="/Tarea_1/js/app.js"></script>
     </body>

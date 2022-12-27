@@ -135,7 +135,7 @@ function mouseout() {
 }
 
  
-
+Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
 })}
 
 function Carga_Grafico_Contagios(){
@@ -282,11 +282,11 @@ var svg = d3.select("#grafica_anio_edo_contagios")
 //Read the data
 d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_x_AnioEstado.csv").then( function(data) {
 
-    console.log(data)
+
 const temp_data = data
 // List of groups (here I have one group per column)
 const allGroup = new Set(data.map(d => d.Year))
-
+Create_Html_Table("#Grafica4_Tabla",temp_data,['Year','Estado','Casos_Confirmados']);
 
 // add the options to the button
 d3.select("#select_year_Button")
@@ -444,10 +444,7 @@ d3.select("#select_year_Button").on("change", function(event,d) {
 
 
 
-})
-
-
-}
+})}
 
 function Carga_Grafico_Vacunas(){
     // append the svg object to the body of the page
@@ -498,23 +495,25 @@ svg.append("path")
     .y0(y(0))
     .y1(d => y(d.Personas_1_Vacuna))
       )
-  })
-}
 
-function openTab(evt, TabName) {
+ Create_Html_Table("#Grafica3_Tabla",data,['Fecha','Personas_1_Vacuna']);
+  })}
+
+function openTab(evt,ParentObject, TabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
   
     // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
+    tabcontent = document.getElementById(ParentObject).getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
     }
   
     // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
+    tablinks = document.getElementById(ParentObject).getElementsByClassName("tablinks");
+  
     for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      tablinks[i].className = tablinks[i].className.replace("active", "");
     }
   
     // Show the current tab, and add an "active" class to the button that opened the tab
@@ -564,8 +563,11 @@ function Create_Html_Table(HtmlDiv_id,data, columns) {
 
 //Seleccion de las tabs por defecto de las graficas
 document.getElementById("Grafica1_btn1").click();
+document.getElementById("Grafica2_btn1").click();
+document.getElementById("Grafica3_btn1").click();
+document.getElementById("Grafica4_btn1").click();
 
-
+//Carga la informacion de cada uno de los graficos
 Carga_Grafico_Contagios()
 Carga_Grafico_Defunciones()
 Carga_Grafico_Estados_Anio()
