@@ -511,6 +511,70 @@ svg.append("path")
  Create_Html_Table("#Grafica3_Tabla",data,['Fecha','Personas_1_Vacuna']);
   })}
 
+  function Carga_Grafico_Vacunas_3dosis(){
+    // append the svg object to the body of the page
+const svg = d3.select("#grafica_vacunas_3Dosis")
+.append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",`translate(${margin.left},${margin.top})`);
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/Covid_vaccinations_MX.csv",
+
+// When reading the csv, I must format variables:
+d => {
+  return {
+        Fecha: d3.timeParse("%Y-%m-%d")(d.Fecha),
+        Personas_3_Dosis : d.Personas_3_Dosis
+      }
+    }).then(
+
+// Now I can use this dataset:
+function(data) {
+
+// Add X axis --> it is a date format
+const x = d3.scaleTime()
+  .domain(d3.extent(data, d => d.Fecha))
+  .range([ 0, width ]);
+  svg.append("g")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x));
+svg.append("text")      // text label for the x axis
+    .attr("x", 400 )
+    .attr("y",  330 )
+    .style("text-anchor", "middle")
+    .text("Mes");
+
+// Add Y axis
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, d => +d.Personas_3_Dosis)])
+  .range([ height, 0 ]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Personas Vacunadas");
+
+// Add the area
+svg.append("path")
+  .datum(data)
+  .attr("fill", "#cce5d")
+  .attr("stroke", "#69b3a2")
+  .attr("stroke-width", 1.5)
+  .attr("d", d3.area()
+    .x(d => x(d.Fecha))
+    .y0(y(0))
+    .y1(d => y(d.Personas_3_Dosis))
+      )
+
+ Create_Html_Table("#Grafica5_Tabla",data,['Fecha','Personas_3_Dosis']);
+  })}
 function openTab(evt,ParentObject, TabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -578,9 +642,11 @@ document.getElementById("Grafica1_btn1").click();
 document.getElementById("Grafica2_btn1").click();
 document.getElementById("Grafica3_btn1").click();
 document.getElementById("Grafica4_btn1").click();
+document.getElementById("Grafica5_btn1").click();
 
 //Carga la informacion de cada uno de los graficos
 Carga_Grafico_Contagios()
 Carga_Grafico_Defunciones()
 Carga_Grafico_Estados_Anio()
 Carga_Grafico_Vacunas()
+Carga_Grafico_Vacunas_3dosis()
