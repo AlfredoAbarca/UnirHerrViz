@@ -446,6 +446,184 @@ d3.select("#select_year_Button").on("change", function(event,d) {
 
 })}
 
+function Carga_Grafico_Estados_Def(){
+    // append the svg object to the body of the page
+
+var svg = d3.select("#grafica_anio_edo_def")
+.append("svg")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+.append("g")
+  .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+
+
+//Read the data
+d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_x_AnioEstado.csv").then( function(data) {
+
+
+const temp_data = data
+// List of groups (here I have one group per column)
+const allGroup = new Set(data.map(d => d.Year))
+Create_Html_Table("#Grafica6_Tabla",temp_data,['Year','Estado','Defunciones']);
+
+// add the options to the button
+d3.select("#select_year_Button2")
+  .selectAll('myOptions')
+     .data(allGroup)
+  .enter()
+    .append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+// A color scale: one color for each group
+const myColor = d3.scaleOrdinal()
+  .domain(allGroup)
+  .range(d3.schemeSet2);
+
+// Add X axis --> it is a date format
+const x = d3.scaleBand()
+.range([ 0, width ])
+.domain(data.map(d => d.Estado))
+.padding(0.2);
+svg.append("g")
+.attr("transform", `translate(0, ${height})`)
+.call(d3.axisBottom(x))
+.selectAll("text")
+  .attr("transform", "translate(-10,0)rotate(-45)")
+  .style("text-anchor", "end");
+
+  svg.append("text")      // text label for the x axis
+  .attr("x", 400 )
+  .attr("y",  330 )
+  .style("text-anchor", "middle")
+  .text("Estado");
+
+// Add Y axis
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, function(d) { return +d.Defunciones;})])
+  .range([ height, 0 ]);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+  svg.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 0 - margin.left)
+  .attr("x",0 - (height / 2))
+  .attr("dy", "1em")
+  .style("text-anchor", "middle")
+  .text("Defunciones");
+
+    // ----------------
+  // Create a tooltip
+  // ----------------
+  const tooltip = d3.selectAll("#grafica_anio_edo_def")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+
+
+  // Three function that change the tooltip when user hover / move / leave a cell
+  const mouseover = function(event, d) {
+    tooltip
+    .html('Defunciones: ' + d3.format(",")(d.Defunciones))
+    .style('opacity', 100);
+    d3.select(this).transition().attr('fill', "Cyan")
+  }
+  const mousemove = function(event, d) {
+    console.log(event.x)
+    tooltip
+           .style("left",((event.x)+50) + "px")
+           .style("top",((event.y)+30) + "px")
+  }
+  const mouseleave = function(event, d) {
+    tooltip
+      .style("opacity", 0)
+      const selectedGroup=d3.select("#select_year_Button2").property("value")
+      if (selectedGroup==2020){
+        d3.select(this).transition().attr("fill", 'orange');}
+        if (selectedGroup==2021){
+        d3.select(this).transition().attr("fill", 'purple');}
+        if (selectedGroup==2022){
+        d3.select(this).transition().attr("fill", 'brown');}
+  }
+
+
+
+  const selectedOption = 2020
+  // run the updateChart function with this selected option
+  update(selectedOption)
+
+// A function that update the chart
+function update(selectedGroup) {
+data=temp_data;
+  // Create new data with the selection?
+  const dataFilter = data.filter(function(d){return d.Year==selectedGroup});
+  data=dataFilter;
+  // Give these new data to update line
+  // set the domains of the axes
+  x.domain(data.map(d => d.Estado));
+  //svg.call(d3.axisBottom(x))
+
+  y.domain([0, d3.max(data, function(d) { return +d.Defunciones;})]);
+  //svg.call(d3.axisLeft(y));
+  // create the bars
+  svg.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .transition().duration(1000)
+      .attr("x", function(d) { return x(d.Estado); })
+      .attr("y", function(d) { return y(d.Defunciones); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.Defunciones); });
+
+
+svg.selectAll(".bar")
+      .data(data)
+        .attr("class", "bar")
+        .transition().duration(1000)
+        .attr("x", function(d) { return x(d.Estado); })
+        .attr("y", function(d) { return y(d.Defunciones); })
+        .attr("width", x.bandwidth())
+        .attr("height", function(d) { return height - y(d.Defunciones); });
+
+const rect = svg
+        .selectAll('.bar')
+        .data(data)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+
+    bars=svg.selectAll(".bar").data(data)
+    if (selectedGroup==2020){
+    bars
+        .attr("fill", 'orange');
+    }
+
+    if (selectedGroup==2021){
+    bars
+        .attr("fill", 'purple');}
+    if (selectedGroup==2022){
+    bars
+        .attr("fill", 'brown');}
+        
+}
+
+// When the button is changed, run the updateChart function
+d3.select("#select_year_Button2").on("change", function(event,d) {
+    // recover the option that has been chosen
+    const selectedOption = d3.select(this).property("value")
+    // run the updateChart function with this selected option
+    update(selectedOption)
+})
+
+
+
+})}
+
 function Carga_Grafico_Vacunas(){
     // append the svg object to the body of the page
 const svg = d3.select("#grafica_vacunas")
@@ -511,7 +689,7 @@ svg.append("path")
  Create_Html_Table("#Grafica3_Tabla",data,['Fecha','Personas_1_Vacuna']);
   })}
 
-  function Carga_Grafico_Vacunas_3dosis(){
+function Carga_Grafico_Vacunas_3dosis(){
     // append the svg object to the body of the page
 const svg = d3.select("#grafica_vacunas_3Dosis")
 .append("svg")
@@ -643,6 +821,7 @@ document.getElementById("Grafica2_btn1").click();
 document.getElementById("Grafica3_btn1").click();
 document.getElementById("Grafica4_btn1").click();
 document.getElementById("Grafica5_btn1").click();
+document.getElementById("Grafica6_btn1").click();
 
 //Carga la informacion de cada uno de los graficos
 Carga_Grafico_Contagios()
@@ -650,3 +829,4 @@ Carga_Grafico_Defunciones()
 Carga_Grafico_Estados_Anio()
 Carga_Grafico_Vacunas()
 Carga_Grafico_Vacunas_3dosis()
+Carga_Grafico_Estados_Def()
