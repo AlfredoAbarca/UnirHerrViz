@@ -17,14 +17,59 @@
             <nav class="navbar bg-light">
                 <div class="container">
                   <a class="navbar-brand" href="#">
-                    <img src="https://www.unir.net/wp-content/uploads/2019/11/Unir_2021_logo.svg"  alt="Bootstrap" >
-                    Tarea 1
+                    <img src="https://www.unir.net/wp-content/uploads/2019/11/Unir_2021_logo.svg" width="300px" alt="Bootstrap" >
+                    Actividad Grupal: Analisis de tendencias en D3.js
                   </a>
                 </div>
               </nav>
               
         </header>
         <main class="container pt-5">
+          <h3>Descripcion de la actividad</h3>
+          <p></p>
+          <p>En esta actividad tenéis que crear una visualización interactiva en D3.js que permita analizar tendencias presentes en cualquiera de los ámbitos recogidos en epData: población, deuda pública, empleo, crimen, vivienda, pensiones, estimación de voto, accidentes de tráfico, etc…</p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+
+          <h3>Descripcion de los datos presentados</h3>
+          Mucho se ha hablado y conocido actualmente de las diferentes cifras y variantes del Covid-19 a nivel mundial y nacional, el presente ejercicio, trata de reflejar de forma simple la informacion que se encuentra disponble a traves de las diferentes fuentes de datos publicas con esta informacion. 
+          <p class="clear"></p>
+          Cada una de las graficas mostradas pretenden recopilar la informacion correspondiente al comportamiento de la pandemia generada por el Covid-19 en Mexico, desde la fecha en la que inicio y hasta el momento en que esta informacion fue recopilada (19/12/2022).
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          Cada una de las graficas se muestra en un conjunto de pestanas donde: 
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <b>Grafica: </b>Muestra la representacion de la graficas de los datos presentados.
+          <p class="clear"></p>
+          <b>Tabla: </b>Es la representacion de los datos en forma tabular, tal cual como se obtiene del dataset empleado para generar dicha grafica.
+          <p class="clear"></p>
+          <b>Data Sources: </b>Se presentan los enlaces a los datasources originales de los cuales se obtuvo la informacion de forma publica.
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <h3>Comportamiento de las olas de Contagio</h3>
+          La siguiente grafica muestra los indices de contagio a traves del tiempo que se han presentado en Mexico, como sabemos, nuestro pais ha pasado por 4 olas de contagio de Covid-19 a lo largo de esta pandemia, mismas que se pueden observar en la grafica siguiente.
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <b style="color:red">Nota: </b>Puede realizar un zoom en cada seccion de la grafica para ver el comportamiento en un determinado rango de tiempo, solo en necesario seleccionar el area del grafico sobre el cual desea hacer zoom y automaticamente ampliara la informacion. 
+          <p class="clear"></p>
+          Para regresar a la vista original de la grafica, es necesario hacer doble click en cualquier parte de la misma. 
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
 
           <!--Primer conjunto de tabs para la grafica de Casos confirmados por dia-->
           <div id="Grafica1_Tab" class="tab">
@@ -48,7 +93,16 @@
           <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
           </div>
           </div>
-
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <h3>Defunciones</h3>
+          La siguiente grafica muestra la tendencia del total de defunciones a lo largo de la duracion de la pandemia de Covid-19 en Mexico. Se puede observar claramente que tuvo un incremento basstante considerable en los primeros meses del 2021 (Marzo-Abril), y al parecer ya ha alcanzado un nivel de estabilizacion al no registrarse un incremento importante de fallecimientos, derivado de los datos recopilados, al dia 19 de Diciembre de 2022, en Mexico se tenia un registro de <b>330,834 Defunciones</b>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <b style="color:red">Nota: </b> Puede deslizar el mouse a traves de la grafica para obtener la fecha y el numero de fallecimientos por cada dia registrado en Mexico.
+          <p class="clear"></p>
+          <p class="clear"></p>
           <!--Segundo conjunto de tabs para la grafica de Defunciones por dia-->
           <div id="Grafica2_Tab" class="tab">
             <button class="tablinks" onclick="openTab(event,'Grafica2_Tab', 'Grafica2_Tab1')" id="Grafica2_btn1">Grafica</button>
@@ -70,7 +124,15 @@
             <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
             </div>
           </div>
-
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <h3>Vacunas Suministradas</h3>
+          Al dia 19 de Diciembre de 2022, se contaba con un registro total de 99 Millones de Mexicanos que han recibido al menos la primer dosis de la vacuna, de las cuales, se tiene un registro de que dentro de ese grupo, 57 millones de personas han recibido lo que se considera el esquema completo de vacunacion (2 dosis + el refuerzo), es decir, cuentan al dia de hoy con 3 vacunas. 
+          <p class="clear"></p>
+          Si consideramos que de igual forma, en el registro del Censo Nacional de poblacion, realizado en 2020 por el INEGI, en Mexico se contabilizaron 126,014,024 habitantes, lo cual indicaria que al menos la mitad de la poblacion ha recibido el esquema completo de vacunacion contra el virus del Covid-19. 
+          <p class="clear"></p>
+          <p class="clear"></p>
           <!--Tercer conjunto de tabs para la grafica de Vacunas suministradas-->
           <div id="Grafica3_Tab" class="tab">
             <button class="tablinks" onclick="openTab(event,'Grafica3_Tab', 'Grafica3_Tab1')" id="Grafica3_btn1">Grafica</button>
@@ -92,7 +154,12 @@
             <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
             </div>
           </div>
-
+          <h3>Distribucion por estado de la republica</h3>
+          Las siguientes 2 graficas muestran la distribucion tanto de las Defunciones como de casos confirmados de Covid-19 por cada uno de los estados de la republica mexicana a lo largo de cada uno de los anios que ha durado la pandemia.
+          <p class="clear"></p>
+          <b style="color:red">Nota: </b> Puede seleccionar cada una de las barras de la grafica para visualizar la cifra reportada por estado, segun corresponda el grafico. 
+          <p class="clear"></p>
+          <p class="clear"></p>
           <!--Cuarto conjunto de tabs para la grafica de Casos confirmados por estados-->
           <div id="Grafica4_Tab" class="tab">
             <button class="tablinks" onclick="openTab(event,'Grafica4_Tab', 'Grafica4_Tab1')" id="Grafica4_btn1">Grafica</button>
@@ -102,6 +169,7 @@
             <div id="Grafica4_Tab1" class="tabcontent" style="background-color: #ffffff;">
               <h4>Casos confirmados por estado y por anio</h4>
               <!-- Initialize a select button -->
+              Por favor seleccione el anio que desea visualizar de la grafica: 
               <select id="select_year_Button"></select>
               <div id="grafica_anio_edo_contagios" class="svg-container"></div>
             </div>
@@ -116,7 +184,13 @@
             <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
             </div>
           </div>
-
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <p class="clear"></p>
+          <h3>Referencias:</h3>
+          Para la realizacion de esta actividad se consideraron la siguientes fuentes tanto para el tema de las fuentes de datos estadisticos, como para los temas tecnicos de visualizacion de los graficos en D3.
+          <p class="clear"></p>
+          <p class="clear"></p>
 
         </main>
         <script src="/Tarea_1/js/app.js"></script>
