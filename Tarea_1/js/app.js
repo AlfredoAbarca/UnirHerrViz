@@ -324,7 +324,7 @@ svg.append("g")
 const y = d3.scaleLinear()
   .domain([0, d3.max(data, function(d) { return +d.Casos_Confirmados;})])
   .range([ height, 0 ]);
-svg.append("g")
+var yAxis=svg.append("g")
   .call(d3.axisLeft(y));
 
   svg.append("text")
@@ -388,9 +388,10 @@ data=temp_data;
   // set the domains of the axes
   x.domain(data.map(d => d.Estado));
   //svg.call(d3.axisBottom(x))
-
-  y.domain([0, d3.max(data, function(d) { return +d.Casos_Confirmados;})]);
-  //svg.call(d3.axisLeft(y));
+ 
+    y.domain([0, d3.max(dataFilter, function(d) { return +d.Casos_Confirmados;})]);
+    y.range([ height, 0 ]);
+    yAxis.call(d3.axisLeft(y));
   // create the bars
   svg.selectAll(".bar")
     .data(data)
@@ -503,7 +504,7 @@ svg.append("g")
 const y = d3.scaleLinear()
   .domain([0, d3.max(data, function(d) { return +d.Defunciones;})])
   .range([ height, 0 ]);
-svg.append("g")
+var yAxis=svg.append("g")
   .call(d3.axisLeft(y));
 
   svg.append("text")
@@ -567,7 +568,7 @@ data=temp_data;
   //svg.call(d3.axisBottom(x))
 
   y.domain([0, d3.max(data, function(d) { return +d.Defunciones;})]);
-  //svg.call(d3.axisLeft(y));
+  yAxis.call(d3.axisLeft(y));
   // create the bars
   svg.selectAll(".bar")
     .data(data)
