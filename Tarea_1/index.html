@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
+        <meta charset="utf-8">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!--link rel="stylesheet" href="css/styles.css"/-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -68,7 +69,11 @@
 
             <div id="Grafica1_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado">* COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University<a href="https://github.com/CSSEGISandData/COVID-19"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
@@ -94,7 +99,11 @@
   
             <div id="Grafica2_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University<a href="https://github.com/CSSEGISandData/COVID-19"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
@@ -120,13 +129,16 @@
   
             <div id="Grafica3_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Our World in Data - Vaccinations<a href="https://ourworldindata.org/covid-vaccinations"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
           <p class="justificado"> En la siguiente grafica se puede observar el contraste de la cantidad de personas con el esquema completo de vacunacion, asi como las fechas de la aplicacion de la misma, se visualiza que en Mayo del presente anio la campana de vacunacion fue muy agresiva cubriendo en tan solo un mes a 45M habitantes, sin embargo ya no ha tenido tanto impacto ya que en los meses subsecuentes no se ha podido alcanzar el total de las personas que tuvo en la primer ronda de vacunacion.</p>
           
-          <!--Cuarto conjunto de tabs para la grafica de las 3 dosis de la vacuna suministrada-->
           <div id="Grafica5_Tab" class="tab">
             <button class="tablinks" onclick="openTab(event,'Grafica5_Tab', 'Grafica5_Tab1')" id="Grafica5_btn1">Grafica</button>
             <button class="tablinks" onclick="openTab(event,'Grafica5_Tab', 'Grafica5_Tab2')">Tabla</button>
@@ -136,15 +148,19 @@
               <h4>Vacunas suministradas (Personas con las 3 dosis)</h4>
               <div id="grafica_vacunas_3Dosis" class="svg-container"></div>
             </div>
-  
+    
             <div id="Grafica5_Tab2" class="tabcontent tab-2">
               <h3>Tabla de los datos</h3>
               <div id="Grafica5_Tabla"></div>
             </div>
-  
+    
             <div id="Grafica5_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Our World in Data - Vaccinations<a href="https://ourworldindata.org/covid-vaccinations"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
@@ -160,7 +176,7 @@
 
             <div id="Grafica4_Tab1" class="tabcontent tab-1">
               <h4>Casos confirmados por estado y por anio</h4>
-              <!-- Initialize a select button -->
+              <!-- Pinta el como de seleccion del anio a visualizar -->
               Por favor seleccione el anio que desea visualizar de la grafica: 
               <select id="select_year_Button"></select>
               <div id="grafica_anio_edo_contagios" class="svg-container"></div>
@@ -173,7 +189,11 @@
   
             <div id="Grafica4_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University<a href="https://github.com/CSSEGISandData/COVID-19"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
@@ -186,8 +206,9 @@
             <button class="tablinks" onclick="openTab(event,'Grafica6_Tab', 'Grafica6_Tab3')">Data Sources</button>
 
             <div id="Grafica6_Tab1" class="tabcontent tab-1">
+              <br/>
               <h4>Defunciones por estado y por anio</h4>
-              <!-- Initialize a select button -->
+              <!-- Pinta el como de seleccion del anio a visualizar -->
               Por favor seleccione el anio que desea visualizar de la grafica: 
               <select id="select_year_Button2"></select>
               <div id="grafica_anio_edo_def" class="svg-container"></div>
@@ -200,11 +221,44 @@
   
             <div id="Grafica6_Tab3" class="tabcontent tab-3">
               <h3>Fuentes de datos</h3>
-              <p>Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University<a href="https://github.com/CSSEGISandData/COVID-19"> Aqui</a></p>
+              <br/>
+              <p class="justificado">* Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
             </div>
           </div>
           <br/>
-          <!-- Ultima parte - Referencias -->
+          <h3>Tendencia de movilidad de los habitantes</h3>
+          <p class="justificado"> De acuerdo a los datos de movilidad de los habitantes en el territorio nacional, se puede apreciar en el siguiente conjunto de graficos, las tendencias de movilidad de los Mexicanos como respuesta a la estrategia de quedarse en casa para prevenir un aumento significativo de contagios.</p>
+          <p class="justificado"> El conjunto de graficos expresados en porcentaje de asistencia a los lugares marcados en cada tabla parten de un dato de referencia inicial y los valores se expresan en porcentaje positivo si el flujo de personas se incrementa y en el caso negativo si las personas han dejado de asistir. </p>
+          <p class="justificado"> Como se puede observar en el siguiente conjunto de graficas, el 50% de la muestra con base al valor de referencia, dejo de asistir a los lugares altamente concurridos como Plazas, Parques y Transporte publico durante los primeros 3 meses de la pandemia, mientras que otros sitios como las oficinas y los supermercados se mantuvo con una disminucion discreta al ser lugares donde la gente no podia dejar de asistir.</p>
+          <br/>
+          <!--Septimo conjunto de Tabs para la grafica de movilidad de Google-->
+          <div id="Grafica7_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event,'Grafica7_Tab', 'Grafica7_Tab1')" id="Grafica7_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica7_Tab', 'Grafica7_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica7_Tab', 'Grafica7_Tab3')">Data Sources</button>
+            
+            <div id="Grafica7_Tab1" class="tabcontent tab-1">
+              <h4>Tendencia de movilidad de los habitantes </h4>
+              <div id="grafica_movilidad" class="svg-container" style="width:900px"></div>
+            </div>
+  
+            <div id="Grafica7_Tab2" class="tabcontent tab-2">
+              <h3>Tabla de los datos</h3>
+              <div id="Grafica7_Tabla"></div>
+            </div>          
+            <div id="Grafica7_Tab3" class="tabcontent tab-3">
+              <h3>Fuentes de datos</h3>
+              <p class="justificado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="justificado"> * COVID-19 Google Community Mobility Reports<a href="https://www.google.com/covid19/mobility/"> Aqui</a></p>
+              <br/>
+              <p class="justificado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
+            </div>
+          </div>
+          <br />
           <h3>Referencias:</h3>
           <p class="justificado"> Para la realizacion de esta actividad se consideraron la siguientes fuentes tanto para el tema de las fuentes de datos estadisticos, como para los temas tecnicos de visualizacion de los graficos en D3.</p>
           
