@@ -56,6 +56,10 @@
     text-align: justify;
   }
 
+  .centrado {
+    text-align: center;
+  }
+
   .nota {
     color: red;
   }
