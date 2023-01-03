@@ -50,293 +50,290 @@ var margin = {top: 10, right: 100, bottom: 80, left: 80},
 //
 //===============================================================================================/
 
-function Carga_Grafico_Defunciones(){
-//===============================================================================================
-//
-// Esta funcion se encargara de dibujar el grafico de la linea de tendencia que refleja como han ido 
-// evolucionando las defunciones en Mexico a lo largo del tiempo que ha durado la pandemia.
-//
-//===============================================================================================
+function Carga_Grafico_Defunciones() {
+  //===============================================================================================
+  //
+  // Esta funcion se encargara de dibujar el grafico de la linea de tendencia que refleja como han ido 
+  // evolucionando las defunciones en Mexico a lo largo del tiempo que ha durado la pandemia.
+  //
+  //===============================================================================================
 
-// Añade el area de dibujo SVG al contenedor de la pagina web (Elemento DIV)
-var svg = d3.select("#grafica_def")
-.append("svg")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", `translate(${margin.left},${margin.top})`);
-
-
+  // Añade el area de dibujo SVG al contenedor de la pagina web (Elemento DIV)
+  var svg = d3.select("#grafica_def")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
 
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",
-   // Lectura del dataset que contiene los datos para este grafico
-   function(d){
+
+
+  d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",
+    // Lectura del dataset que contiene los datos para este grafico
+    function(d){
     return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Muertes : d.Muertes }
   }).then(
 
-  //Ya con los datos se realizara la definicion de los limites del grafico.
-  
-  function(data) {
+    //Ya con los datos se realizara la definicion de los limites del grafico.
+    function(data) {
+      //Se genera la escala del eje de las X de este grafico
+      const x = d3.scaleTime()
+        .domain(d3.extent(data, function(d) { return d.Fecha; }))
+        .range([ 0, width ]);
+      svg.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(x));
+      //Se agrega una etiqueta con el nombre de la representacion de los datos del eje
+        svg.append("text")     
+        .attr("x", 400 )
+        .attr("y",  330 )
+        .style("text-anchor", "middle")
+        .text("Fecha");
+
+      //Se genera ahora la escala del eje de las Y de este grafico
+      const y = d3.scaleLinear()
+        .domain([0, 400000])
+        .range([ height, 0 ]);
+      svg.append("g")
+        .call(d3.axisLeft(y));
+      //Se genera la etiqueta de la representacion del la escala del eje de las Y.
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Defunciones");
 
 
-    
-    //Se genera la escala del eje de las X de este grafico
-    const x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.Fecha; }))
-      .range([ 0, width ]);
-    svg.append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(x));
-    //Se agrega una etiqueta con el nombre de la representacion de los datos del eje
-      svg.append("text")     
-      .attr("x", 400 )
-      .attr("y",  330 )
-      .style("text-anchor", "middle")
-      .text("Fecha");
+    //Esta funcion permite definir el valor mas cercano al eje de las X de la posicion del mouse
+    var bisect = d3.bisector(function(d) { return d.Fecha; }).left;
 
-    //Se genera ahora la escala del eje de las Y de este grafico
-    const y = d3.scaleLinear()
-      .domain([0, 400000])
-      .range([ height, 0 ]);
-    svg.append("g")
-      .call(d3.axisLeft(y));
-    //Se genera la etiqueta de la representacion del la escala del eje de las Y.
-      svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Defunciones");
+    //Este segmento genera el circulo que se dibijara al desplazar el mouse a traves de la linea de tendencia generada
+    //este circulo servira para mostrar la etiqueta o tooltip con el valor a lo largo del tiempo.
+    var focus = svg
+      .append('g')
+      .append('circle')
+        .style("fill", "none")
+        .attr("stroke", "black")
+        .attr('r', 8.5)
+        .style("opacity", 50)
 
+    //Se genera el texto que viajara a lo largo de la curva tan pronto se genere el tooltip 
+    var focusText = svg
+      .append('g')
+      .append('text')
+        .style("font-size", "10px")
+        .style("opacity", 0)
+        .attr("text-anchor", "left")
+        .attr("alignment-baseline", "middle")
 
-  //Esta funcion permite definir el valor mas cercano al eje de las X de la posicion del mouse
-  var bisect = d3.bisector(function(d) { return d.Fecha; }).left;
-
-  //Este segmento genera el circulo que se dibijara al desplazar el mouse a traves de la linea de tendencia generada
-  //este circulo servira para mostrar la etiqueta o tooltip con el valor a lo largo del tiempo.
-  var focus = svg
-    .append('g')
-    .append('circle')
-      .style("fill", "none")
-      .attr("stroke", "black")
-      .attr('r', 8.5)
-      .style("opacity", 50)
-
-  //Se genera el texto que viajara a lo largo de la curva tan pronto se genere el tooltip 
-  var focusText = svg
-    .append('g')
-    .append('text')
-      .style("font-size", "10px")
-      .style("opacity", 0)
-      .attr("text-anchor", "left")
-      .attr("alignment-baseline", "middle")
-
-    //Se genera la linea de tendencia principal del grafico 
-    svg.append("path")
-      .datum(data)
-      .attr("fill", "none")
-      .attr("stroke", "steelblue")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-        .x(function(d) { return x(d.Fecha) })
-        .y(function(d) { return y(d.Muertes) })
-        )
- // Genera un objeto de tipo rect que cubrira el area del grafico y mismo que obtendra los eventos de movimiento del mouse. 
- // lo anterior para poder generar el tooltip que se desplazara a lo largo de la linea del grafico
- svg
- .append('rect')
- .style("fill", "none")
- .style("pointer-events", "all")
- .attr('width', width)
- .attr('height', height)
- .on('mouseover', mouseover)
- .on('mousemove', mousemove)
- .on('mouseout', mouseout);
+      //Se genera la linea de tendencia principal del grafico 
+      svg.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.Fecha) })
+          .y(function(d) { return y(d.Muertes) })
+          )
+  // Genera un objeto de tipo rect que cubrira el area del grafico y mismo que obtendra los eventos de movimiento del mouse. 
+  // lo anterior para poder generar el tooltip que se desplazara a lo largo de la linea del grafico
+  svg.append('rect')
+    .style("fill", "none")
+    .style("pointer-events", "all")
+    .attr('width', width)
+    .attr('height', height)
+    .on('mouseover', mouseover)
+    .on('mousemove', mousemove)
+    .on('mouseout', mouseout);
 
 
-// Eventos del mouse al pasar sobre el grafico. 
+  // Eventos del mouse al pasar sobre el grafico. 
 
-function mouseover() {
- focus.style("opacity", 1)
- focusText.style("opacity",1)
+  function mouseover() {
+  focus.style("opacity", 1)
+  focusText.style("opacity",1)
+  }
+
+  function mousemove() {
+  //Cuando el mouse se desplaza por el grafico, se obtienen las coordenadas X y Y del grafico para tratar de ubicar el tooltip mostrado a lo largo de la linea de grafico principal.
+  var x0 = x.invert(d3.pointer(event, this)[0]);
+  var i = bisect(data, x0, 1);
+  const formato = d3.format(",");
+  const formatTime = d3.timeFormat("%B %d, %Y");
+  selectedData = data[i]
+  focus
+    .attr("cx", x(selectedData.Fecha))
+    .attr("cy", y(selectedData.Muertes))
+  focusText
+      .html("")
+  focusText.append("tspan")
+    .text("Defunciones:" + formato(selectedData.Muertes))
+    .attr("x", x(selectedData.Fecha)+15)
+    .attr("y", y(selectedData.Muertes))
+  focusText.append("tspan")
+    .text("Fecha:" + formatTime(selectedData.Fecha))
+    .attr("x", x(selectedData.Fecha)+15)
+    .attr("y", y(selectedData.Muertes)+10)
+  }
+
+  //Cuando el mouse de desplaza fuera del area del grafico el texto desaparece
+  function mouseout() {
+  focus.style("opacity", 0)
+  focusText.style("opacity", 0)
+  }
+
+
+  // Al finalizar la carga del grafico, se generara tambien la carga del dataset en formato de tabla, mismo que se mostrara en un tab separado
+  // dentro de la pagina web.
+  Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
+  })
 }
 
-function mousemove() {
- //Cuando el mouse se desplaza por el grafico, se obtienen las coordenadas X y Y del grafico para tratar de ubicar el tooltip mostrado a lo largo de la linea de grafico principal.
- var x0 = x.invert(d3.pointer(event, this)[0]);
- var i = bisect(data, x0, 1);
- const formato = d3.format(",");
- const formatTime = d3.timeFormat("%B %d, %Y");
- selectedData = data[i]
- focus
-   .attr("cx", x(selectedData.Fecha))
-   .attr("cy", y(selectedData.Muertes))
-focusText
-    .html("")
-focusText.append("tspan")
-   .text("Defunciones:" + formato(selectedData.Muertes))
-   .attr("x", x(selectedData.Fecha)+15)
-   .attr("y", y(selectedData.Muertes))
-focusText.append("tspan")
-   .text("Fecha:" + formatTime(selectedData.Fecha))
-   .attr("x", x(selectedData.Fecha)+15)
-   .attr("y", y(selectedData.Muertes)+10)
- }
+function Carga_Grafico_Contagios() {
+  //===============================================================================================
+  //
+  // Esta funcion se encargara de dibujar el grafico de area mostrando la evolucion de la tendencia de las olas
+  // de contagio presentadas en Mexico durante la pandemia de COVID-19, en esta grafica se agrega la funcionalidad
+  // de poder realizar un zoom a las facciones de tiempo para tener un mayor detalle en el tiempo de como se fueron
+  // comportando cada una de las Olas de la pandemia.
+  //
+  //===============================================================================================
 
-//Cuando el mouse de desplaza fuera del area del grafico el texto desaparece
-function mouseout() {
- focus.style("opacity", 0)
- focusText.style("opacity", 0)
-}
+  //Agrega el objeto de tipo SVG al contenedor destinado para este grafico. 
+  const svg = d3.select("#grafica_contagios")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            `translate(${margin.left}, ${margin.top})`);
 
 
-// Al finalizar la carga del grafico, se generara tambien la carga del dataset en formato de tabla, mismo que se mostrara en un tab separado
-// dentro de la pagina web.
-Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
-})}
+  d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   
+  // Realiza la lectura del archivo CSV del repositorio de GitHub
+  d => {
+      return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
+    }).then(
 
-function Carga_Grafico_Contagios(){
-//===============================================================================================
-//
-// Esta funcion se encargara de dibujar el grafico de area mostrando la evolucion de la tendencia de las olas
-// de contagio presentadas en Mexico durante la pandemia de COVID-19, en esta grafica se agrega la funcionalidad
-// de poder realizar un zoom a las facciones de tiempo para tener un mayor detalle en el tiempo de como se fueron
-// comportando cada una de las Olas de la pandemia.
-//
-//===============================================================================================
+    //Ya con la informacion obtenida y con el formato correcto, procederemos a generar los ejes del grafico
+    function(data) {
+      
+      //Se genera la escala del eje X que es basado en las fechas del dataset
+      const x = d3.scaleTime()
+        .domain(d3.extent(data, d => d.Fecha))
+        .range([ 0, width ]);
+      xAxis = svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x));
 
-//Agrega el objeto de tipo SVG al contenedor destinado para este grafico. 
-const svg = d3.select("#grafica_contagios")
-.append("svg")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-.append("g")
-  .attr("transform",
-        `translate(${margin.left}, ${margin.top})`);
+      //Se agrega la etiqueta del eje de las X correspondiente a las diferentes fechas contenidas en el dataset
+        svg.append("text")     
+        .attr("x", 400 )
+        .attr("y",  330 )
+        .style("text-anchor", "middle")
+        .text("Fecha");
 
+      //Se agrega el eje de las Y en el grafico con el dato de Casos Confirmados
+      const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => +d.Casos_Confirmados)])
+        .range([ height, 0 ]);
+      yAxis = svg.append("g")
+        .call(d3.axisLeft(y));
+      // Se agrega la etiqueta del eje de las Y referente a la escala del numero e casos confirmados
+        svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Casos Confirmados");
 
-d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",   
-// Realiza la lectura del archivo CSV del repositorio de GitHub
-d => {
-    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Casos_Confirmados : d.Tasa_de_Contagio }
-  }).then(
+      // Se agrega un area de ClipPath en la cual podremos hacer el Zoom del grafico, esta area es la misma de las dimensiones del grafico original
+      // lo que sobre pase las dimensiones de este grafico, no podran dibujarse. 
+      const clip = svg.append("defs").append("clipPath")
+          .attr("id", "clip")
+          .append("rect")
+          .attr("width", width )
+          .attr("height", height )
+          .attr("x", 0)
+          .attr("y", 0);
 
-  //Ya con la informacion obtenida y con el formato correcto, procederemos a generar los ejes del grafico
-  function(data) {
+      //Se agrega la funcionalidad de brushing que es el rectangulo que dibujaremos al seleccionar el area a la cual realizaremos el Zoom. 
+      const brush = d3.brushX()                   
+          .extent( [ [0,0], [width,height] ] )  // Se inicializa el pbjeto de brush con los parametros 0,0 que significa que podremos seleccionar el area completa. 
+          .on("end", updateChart)               // Cada vez que se termine de seleccionar el area, se ejecutara el evento de "Actualizar el grafico"
+
     
-    //Se genera la escala del eje X que es basado en las fechas del dataset
-    const x = d3.scaleTime()
-      .domain(d3.extent(data, d => d.Fecha))
-      .range([ 0, width ]);
-    xAxis = svg.append("g")
-      .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      const area = svg.append('g')
+        .attr("clip-path", "url(#clip)")
 
-    //Se agrega la etiqueta del eje de las X correspondiente a las diferentes fechas contenidas en el dataset
-      svg.append("text")     
-      .attr("x", 400 )
-      .attr("y",  330 )
-      .style("text-anchor", "middle")
-      .text("Fecha");
+    
+      const areaGenerator = d3.area()
+        .x(d => x(d.Fecha))
+        .y0(y(0))
+        .y1(d => y(d.Casos_Confirmados))
 
-    //Se agrega el eje de las Y en el grafico con el dato de Casos Confirmados
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => +d.Casos_Confirmados)])
-      .range([ height, 0 ]);
-    yAxis = svg.append("g")
-      .call(d3.axisLeft(y));
-    // Se agrega la etiqueta del eje de las Y referente a la escala del numero e casos confirmados
-      svg.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Casos Confirmados");
+      // Se agregan los elementos del objeto de brushing al area del grafico.
+      area.append("path")
+        .datum(data)
+        .attr("class", "myArea") 
+        .attr("fill", "#69b3a2")
+        .attr("fill-opacity", .3)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1)
+        .attr("d", areaGenerator )
 
-    // Se agrega un area de ClipPath en la cual podremos hacer el Zoom del grafico, esta area es la misma de las dimensiones del grafico original
-    // lo que sobre pase las dimensiones de este grafico, no podran dibujarse. 
-    const clip = svg.append("defs").append("clipPath")
-        .attr("id", "clip")
-        .append("rect")
-        .attr("width", width )
-        .attr("height", height )
-        .attr("x", 0)
-        .attr("y", 0);
+      area
+        .append("g")
+          .attr("class", "brush")
+          .call(brush);
 
-    //Se agrega la funcionalidad de brushing que es el rectangulo que dibujaremos al seleccionar el area a la cual realizaremos el Zoom. 
-    const brush = d3.brushX()                   
-        .extent( [ [0,0], [width,height] ] )  // Se inicializa el pbjeto de brush con los parametros 0,0 que significa que podremos seleccionar el area completa. 
-        .on("end", updateChart)               // Cada vez que se termine de seleccionar el area, se ejecutara el evento de "Actualizar el grafico"
+      let idleTimeout
+      function idled() { idleTimeout = null; }
 
-   
-    const area = svg.append('g')
-      .attr("clip-path", "url(#clip)")
+      // Esta es la funcion que actualizara tanto la escala de la grafica como los datos presentados, tan pronto se termine de seleccionar el area a la 
+      //cual se realizara el Zoom de los datos. 
+      function updateChart(event) {
 
-   
-    const areaGenerator = d3.area()
-      .x(d => x(d.Fecha))
-      .y0(y(0))
-      .y1(d => y(d.Casos_Confirmados))
+        // Obtiene las coordenadas y espacio de tiempo seleccionados.
+        extent = event.selection
 
-    // Se agregan los elementos del objeto de brushing al area del grafico.
-    area.append("path")
-      .datum(data)
-      .attr("class", "myArea") 
-      .attr("fill", "#69b3a2")
-      .attr("fill-opacity", .3)
-      .attr("stroke", "black")
-      .attr("stroke-width", 1)
-      .attr("d", areaGenerator )
+        // Si no se selecciono un gran area, entonces no se realizara un zoom, de otra forma, se llevara a cabo la actualizacion de los datos de la grafica.
+        if(!extent){
+          if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // Tiempo de espera de la transicion durante la actualizacion.
+          x.domain([ 4,8])
+        }else{
+          x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+          area.select(".brush").call(brush.move, null) // Este codigo, remueve el cuadro de seleccion del grafico tan pronto se llevo a cabo la actualizacion del grafico.
+        }
 
-    area
-      .append("g")
-        .attr("class", "brush")
-        .call(brush);
-
-    let idleTimeout
-    function idled() { idleTimeout = null; }
-
-    // Esta es la funcion que actualizara tanto la escala de la grafica como los datos presentados, tan pronto se termine de seleccionar el area a la 
-    //cual se realizara el Zoom de los datos. 
-    function updateChart(event) {
-
-      // Obtiene las coordenadas y espacio de tiempo seleccionados.
-      extent = event.selection
-
-      // Si no se selecciono un gran area, entonces no se realizara un zoom, de otra forma, se llevara a cabo la actualizacion de los datos de la grafica.
-      if(!extent){
-        if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // Tiempo de espera de la transicion durante la actualizacion.
-        x.domain([ 4,8])
-      }else{
-        x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
-        area.select(".brush").call(brush.move, null) // Este codigo, remueve el cuadro de seleccion del grafico tan pronto se llevo a cabo la actualizacion del grafico.
+        // Se actualiza la escala del eje de los X con base a la region seleccionada
+        xAxis.transition().duration(1000).call(d3.axisBottom(x))
+        area
+            .select('.myArea')
+            .transition()
+            .duration(1000)
+            .attr("d", areaGenerator)
       }
 
-      // Se actualiza la escala del eje de los X con base a la region seleccionada
-      xAxis.transition().duration(1000).call(d3.axisBottom(x))
-      area
+      // Se añade la funcionalidad de reiniciar el grafico con el doble click del mouse. 
+      svg.on("dblclick",function(){
+        x.domain(d3.extent(data, d => d.Fecha))
+        xAxis.transition().call(d3.axisBottom(x))
+        area
           .select('.myArea')
           .transition()
-          .duration(1000)
           .attr("d", areaGenerator)
-    }
+      });
 
-    // Se añade la funcionalidad de reiniciar el grafico con el doble click del mouse. 
-    svg.on("dblclick",function(){
-      x.domain(d3.extent(data, d => d.Fecha))
-      xAxis.transition().call(d3.axisBottom(x))
-      area
-        .select('.myArea')
-        .transition()
-        .attr("d", areaGenerator)
-    });
-
-    //Se realiza la carga de los datos utilizados en este grafico en una tabla a ser desplegados en un objetivo de tipo tab en la pagina de los graficos.
-    Create_Html_Table("#Grafica1_Tabla",data,['Fecha','Casos_Confirmados']);
-})}
+      //Se realiza la carga de los datos utilizados en este grafico en una tabla a ser desplegados en un objetivo de tipo tab en la pagina de los graficos.
+      Create_Html_Table("#Grafica1_Tabla",data,['Fecha','Casos_Confirmados']);
+  })
+}
 
 function Carga_Grafico_Estados_Anio(){
 
@@ -1005,7 +1002,7 @@ function openTab(evt,ParentObject, TabName) {
     evt.currentTarget.className += " active";
   }
 
-function Create_Html_Table(HtmlDiv_id,data, columns) {
+function Create_Html_Table(HtmlDiv_id, data, columns) {
 //======================================================================
 //
 // Esta funcion, generara una tabla con los datos del dataset que recibe como parametro
@@ -1016,16 +1013,15 @@ function Create_Html_Table(HtmlDiv_id,data, columns) {
 //          columns: Arreglo de cadenas de caracteres que indican las columnas a mostrarse en la tabla. 
 //
 //======================================================================
-	var table = d3.select(HtmlDiv_id)
-        .append('table')
-	var thead = table.append('thead')
+	var table = d3.select(HtmlDiv_id).append('table');
+	var thead = table.append('thead');
 	var	tbody = table.append('tbody');
 	// Genera los titulos de las columnas de la tabla con base al dataset pasado como parametro.
 	thead.append('tr')
 	  .selectAll('th')
 	  .data(columns).enter()
 	  .append('th')
-	    .text(function (column) { return column; })
+	    .text(function (column) { return column.replaceAll('_', ' '); })
         .style("border", "1px black solid")
         .style("padding", "5px")
         .style("background-color", "lightgray")
@@ -1042,6 +1038,9 @@ function Create_Html_Table(HtmlDiv_id,data, columns) {
 	var cells = rows.selectAll('td')
 	  .data(function (row) {
 	    return columns.map(function (column) {
+        if(column == 'Fecha') {
+          row[column] = formatDate(row[column]);
+        } 
 	      return {column: column, value: row[column]};
 	    });
 	  })
@@ -1051,6 +1050,20 @@ function Create_Html_Table(HtmlDiv_id,data, columns) {
         .style("border", "1px black solid")
         .style("padding", "5px");
   return table;
+}
+
+function formatDate(date) {
+  var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+  if (month.length < 2) 
+      month = '0' + month;
+  if (day.length < 2) 
+      day = '0' + day;
+
+  return [day, month, year].join('/');
 }
 
 

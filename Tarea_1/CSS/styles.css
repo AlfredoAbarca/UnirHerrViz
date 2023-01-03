@@ -87,3 +87,7 @@
     overflow-x: scroll;
     background-color: #ffffff;
   }
+
+  .tabla-datos > table {
+    margin: 0 auto; /* or margin: 0 auto 0 auto */
+  }
