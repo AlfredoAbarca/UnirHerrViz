@@ -1044,7 +1044,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	  .data(function (row) {
 	    return columns.map(function (column) {
         if(column == 'Fecha') {
-          row[column] = formatDate(row[column]);
+          //row[column] = formatDate(row[column]);
         } 
 	      return {column: column, value: row[column]};
 	    });
