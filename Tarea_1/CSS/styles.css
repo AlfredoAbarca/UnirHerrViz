@@ -91,3 +91,16 @@
   .tabla-datos > table {
     margin: 0 auto; /* or margin: 0 auto 0 auto */
   }
+
+  .tabla > thead > tr > th {
+    border: 1px black solid;
+    padding: 5px;
+    background-color: lightgray;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .tabla > tbody > tr > td {
+    border: 1px black solid;
+    padding: 5px;
+  }

@@ -186,10 +186,9 @@ function Carga_Grafico_Defunciones() {
   focusText.style("opacity", 0)
   }
 
-
   // Al finalizar la carga del grafico, se generara tambien la carga del dataset en formato de tabla, mismo que se mostrara en un tab separado
   // dentro de la pagina web.
-  Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
+  Create_Html_Table_2("Grafica2_Tabla", data, ['Fecha','Muertes']);
   })
 }
 
@@ -221,7 +220,6 @@ function Carga_Grafico_Contagios() {
 
     //Ya con la informacion obtenida y con el formato correcto, procederemos a generar los ejes del grafico
     function(data) {
-      
       //Se genera la escala del eje X que es basado en las fechas del dataset
       const x = d3.scaleTime()
         .domain(d3.extent(data, d => d.Fecha))
@@ -329,9 +327,9 @@ function Carga_Grafico_Contagios() {
           .transition()
           .attr("d", areaGenerator)
       });
-
+      
       //Se realiza la carga de los datos utilizados en este grafico en una tabla a ser desplegados en un objetivo de tipo tab en la pagina de los graficos.
-      Create_Html_Table("#Grafica1_Tabla",data,['Fecha','Casos_Confirmados']);
+      Create_Html_Table_2("Grafica1_Tabla", data, ['Fecha','Casos_Confirmados']);
   })
 }
 
@@ -364,7 +362,7 @@ const temp_data = data
 const allGroup = new Set(data.map(d => d.Year))
 
 //Se cargan los datos de este dataset en una tabla en un tab separado para mostrar los datos empleados para este grafico.
-Create_Html_Table("#Grafica4_Tabla",temp_data,['Year','Estado','Casos_Confirmados']);
+Create_Html_Table_2("Grafica4_Tabla", data, ['Year','Estado','Casos_Confirmados']);
 
 //Se agregan las opciones de los diversos años al boton de lista desplegable
 d3.select("#select_year_Button")
@@ -559,7 +557,7 @@ const temp_data = data
 const allGroup = new Set(data.map(d => d.Year))
 
 //Se genera una tabla en una pestaña aparte de la pagina web para mostrar los datos del dataset empleados para este nuevo grafico.
-Create_Html_Table("#Grafica6_Tabla",temp_data,['Year','Estado','Defunciones']);
+Create_Html_Table_2("Grafica6_Tabla", data, ['Year','Estado','Defunciones']);
 
 //Se añaden los valos de los años obtenidos al boton de lista desplegable.
 d3.select("#select_year_Button2")
@@ -793,9 +791,10 @@ svg.append("path")
     .y1(d => y(d.Personas_1_Vacuna))
       )
 
-//Se genera la tabla con la informacion del dataset empleado para esta grafica en una pestaña aparte dentro de la pagina. 
- Create_Html_Table("#Grafica3_Tabla",data,['Fecha','Personas_1_Vacuna']);
-  })}
+  //Se genera la tabla con la informacion del dataset empleado para esta grafica en una pestaña aparte dentro de la pagina. 
+  Create_Html_Table_2("Grafica3_Tabla", data, ['Fecha','Personas_1_Vacuna']);
+  })
+}
 
 function Carga_Grafico_Vacunas_3dosis(){
 //===============================================================================================
@@ -869,9 +868,10 @@ svg.append("path")
     .y1(d => y(d.Personas_3_Dosis))
       )
 
-//Se agregan los datos del dataset empleados, para mostrarse en una tabla dentro de una pestaña a parte dentro de la misma pagina. 
- Create_Html_Table("#Grafica5_Tabla",data,['Fecha','Personas_3_Dosis']);
-  })}
+  //Se agregan los datos del dataset empleados, para mostrarse en una tabla dentro de una pestaña a parte dentro de la misma pagina. 
+  Create_Html_Table_2("Grafica5_Tabla", data, ['Fecha','Personas_3_Dosis']);
+  })
+}
 
 function Carga_Grafico_Movilidad(){
 //===============================================================================================
@@ -964,7 +964,7 @@ d => {
     .style("fill", function(d){ return color(d[0]) })
 
     // Se genera una tabla con el dataset empleado en este grafico a fin de mostrarlo en una pestaña separada.
-    Create_Html_Table(Grafica7_Tabla,data,['Fecha','Lugar','Porcentaje'])
+    Create_Html_Table_2("Grafica7_Tabla", data, ['Fecha','Lugar','Porcentaje']);
 
 })}
 
@@ -1002,7 +1002,7 @@ function openTab(evt,ParentObject, TabName) {
     evt.currentTarget.className += " active";
   }
 
-function Create_Html_Table(HtmlDiv_id, data, columns) {
+function Create_Html_Table(HtmlDiv_id, temp_data, columns) {
 //======================================================================
 //
 // Esta funcion, generara una tabla con los datos del dataset que recibe como parametro
@@ -1013,7 +1013,9 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 //          columns: Arreglo de cadenas de caracteres que indican las columnas a mostrarse en la tabla. 
 //
 //======================================================================
-	var table = d3.select(HtmlDiv_id).append('table');
+	console.log(HtmlDiv_id, temp_data);
+  var parseDate = d3.timeParse("%Y-%m-%d");
+  var table = d3.select(HtmlDiv_id).append('table');
 	var thead = table.append('thead');
 	var	tbody = table.append('tbody');
 	// Genera los titulos de las columnas de la tabla con base al dataset pasado como parametro.
@@ -1030,7 +1032,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 
 	// Genera las filas con cada uno de los registros del dataset
 	var rows = tbody.selectAll('tr')
-	  .data(data)
+	  .data(temp_data)
 	  .enter()
 	  .append('tr');
 
@@ -1038,9 +1040,9 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	var cells = rows.selectAll('td')
 	  .data(function (row) {
 	    return columns.map(function (column) {
-        if(column == 'Fecha') {
-          row[column] = formatDate(row[column]);
-        } 
+        // if(column == 'Fecha') {
+        //   row[column] = formatDate(row[column]);
+        // } 
 	      return {column: column, value: row[column]};
 	    });
 	  })
@@ -1052,6 +1054,56 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
   return table;
 }
 
+/**
+ * Esta funcion, generara una tabla con los datos del dataset que recibe como parametro
+ * 
+ * @param {*} HtmlDiv_id El nombre del objeto de tipo DIV donde se creara esta tabla 
+ * @param {*} data El objeto del dataset que contiene toda la informacion que se mostrara en la tabla. 
+ * @param {*} columns Arreglo de cadenas de caracteres que indican las columnas a mostrarse en la tabla. 
+ */
+function Create_Html_Table_2(HtmlDiv_id, data, columns) {
+    // Se inicia creando la tabla con su clase
+    var tbl = '<table class="tabla">';
+    // Se agrega el thead
+    tbl += '<thead>';
+    tbl += '<tr>';
+    // Se hace un recorrido de las columnas para agregarlas al thead
+    columns.forEach( item => {
+      tbl += '<th>' + item.replaceAll('_', ' ') + '</th>';
+    });
+    tbl += '</tr>';
+    tbl += '</thead>';
+
+    // Se inicia el tbody
+    tbl += '<tbody>';
+    // Se realiza el recorrido de los datos
+    data.forEach( item => {
+      tbl += '<tr>';
+      // Se insertan los datos de manera dinámica segun las columnas que se hayan mandado por parámetro
+      for(var i = 0; i < columns.length; i++) {
+        if(columns[i] == 'Fecha'){
+          tbl += '<td>' + formatDate(item[columns[i]]) + '</td>';
+        } else {
+          tbl += '<td>' + item[columns[i]] + '</td>';
+        }
+        
+      }
+      tbl += '</tr>';
+    })
+
+    tbl += '</tbody>';
+    tbl += '</table>';
+
+    // Se agrega al html todo el contenido en el div que se envía por parámetro
+    document.getElementById(HtmlDiv_id).innerHTML = tbl;
+  }
+
+/**
+ * Esta función da formato a la fecha
+ * 
+ * @param {*} date El objeto de la fecha en javascript
+ * @returns El formato de la fecha d/M/Y
+ */
 function formatDate(date) {
   var d = new Date(date),
       month = '' + (d.getMonth() + 1),
@@ -1078,10 +1130,10 @@ document.getElementById("Grafica6_btn1").click();
 document.getElementById("Grafica7_btn1").click();
 
 //Carga la informacion de cada uno de los graficos
-Carga_Grafico_Contagios()
-Carga_Grafico_Defunciones()
-Carga_Grafico_Estados_Anio()
-Carga_Grafico_Vacunas()
-Carga_Grafico_Vacunas_3dosis()
-Carga_Grafico_Estados_Def()
-Carga_Grafico_Movilidad()
+Carga_Grafico_Contagios();
+Carga_Grafico_Defunciones();
+Carga_Grafico_Estados_Anio();
+Carga_Grafico_Vacunas();
+Carga_Grafico_Vacunas_3dosis();
+Carga_Grafico_Estados_Def();
+Carga_Grafico_Movilidad();
