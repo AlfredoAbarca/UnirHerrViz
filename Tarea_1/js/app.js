@@ -50,148 +50,152 @@ var margin = {top: 10, right: 100, bottom: 80, left: 80},
 //
 //===============================================================================================/
 
-function Carga_Grafico_Defunciones() {
-  //===============================================================================================
-  //
-  // Esta funcion se encargara de dibujar el grafico de la linea de tendencia que refleja como han ido 
-  // evolucionando las defunciones en Mexico a lo largo del tiempo que ha durado la pandemia.
-  //
-  //===============================================================================================
-
-  // Añade el area de dibujo SVG al contenedor de la pagina web (Elemento DIV)
-  var svg = d3.select("#grafica_def")
+function Carga_Grafico_Defunciones(){
+    //===============================================================================================
+    //
+    // Esta funcion se encargara de dibujar el grafico de la linea de tendencia que refleja como han ido 
+    // evolucionando las defunciones en Mexico a lo largo del tiempo que ha durado la pandemia.
+    //
+    //===============================================================================================
+    
+    // Añade el area de dibujo SVG al contenedor de la pagina web (Elemento DIV)
+    var svg = d3.select("#grafica_def")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
-
-
-
-
-  d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",
-    // Lectura del dataset que contiene los datos para este grafico
-    function(d){
-    return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Muertes : d.Muertes }
-  }).then(
-
-    //Ya con los datos se realizara la definicion de los limites del grafico.
-    function(data) {
-      //Se genera la escala del eje de las X de este grafico
-      const x = d3.scaleTime()
-        .domain(d3.extent(data, function(d) { return d.Fecha; }))
-        .range([ 0, width ]);
-      svg.append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x));
-      //Se agrega una etiqueta con el nombre de la representacion de los datos del eje
-        svg.append("text")     
-        .attr("x", 400 )
-        .attr("y",  330 )
-        .style("text-anchor", "middle")
-        .text("Fecha");
-
-      //Se genera ahora la escala del eje de las Y de este grafico
-      const y = d3.scaleLinear()
-        .domain([0, 400000])
-        .range([ height, 0 ]);
-      svg.append("g")
-        .call(d3.axisLeft(y));
-      //Se genera la etiqueta de la representacion del la escala del eje de las Y.
-        svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .text("Defunciones");
-
-
-    //Esta funcion permite definir el valor mas cercano al eje de las X de la posicion del mouse
-    var bisect = d3.bisector(function(d) { return d.Fecha; }).left;
-
-    //Este segmento genera el circulo que se dibijara al desplazar el mouse a traves de la linea de tendencia generada
-    //este circulo servira para mostrar la etiqueta o tooltip con el valor a lo largo del tiempo.
-    var focus = svg
-      .append('g')
-      .append('circle')
-        .style("fill", "none")
-        .attr("stroke", "black")
-        .attr('r', 8.5)
-        .style("opacity", 50)
-
-    //Se genera el texto que viajara a lo largo de la curva tan pronto se genere el tooltip 
-    var focusText = svg
-      .append('g')
-      .append('text')
-        .style("font-size", "10px")
-        .style("opacity", 0)
-        .attr("text-anchor", "left")
-        .attr("alignment-baseline", "middle")
-
-      //Se genera la linea de tendencia principal del grafico 
-      svg.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
-        .attr("d", d3.line()
-          .x(function(d) { return x(d.Fecha) })
-          .y(function(d) { return y(d.Muertes) })
-          )
-  // Genera un objeto de tipo rect que cubrira el area del grafico y mismo que obtendra los eventos de movimiento del mouse. 
-  // lo anterior para poder generar el tooltip que se desplazara a lo largo de la linea del grafico
-  svg.append('rect')
-    .style("fill", "none")
-    .style("pointer-events", "all")
-    .attr('width', width)
-    .attr('height', height)
-    .on('mouseover', mouseover)
-    .on('mousemove', mousemove)
-    .on('mouseout', mouseout);
-
-
-  // Eventos del mouse al pasar sobre el grafico. 
-
-  function mouseover() {
-  focus.style("opacity", 1)
-  focusText.style("opacity",1)
-  }
-
-  function mousemove() {
-  //Cuando el mouse se desplaza por el grafico, se obtienen las coordenadas X y Y del grafico para tratar de ubicar el tooltip mostrado a lo largo de la linea de grafico principal.
-  var x0 = x.invert(d3.pointer(event, this)[0]);
-  var i = bisect(data, x0, 1);
-  const formato = d3.format(",");
-  const formatTime = d3.timeFormat("%B %d, %Y");
-  selectedData = data[i]
-  focus
-    .attr("cx", x(selectedData.Fecha))
-    .attr("cy", y(selectedData.Muertes))
-  focusText
-      .html("")
-  focusText.append("tspan")
-    .text("Defunciones:" + formato(selectedData.Muertes))
-    .attr("x", x(selectedData.Fecha)+15)
-    .attr("y", y(selectedData.Muertes))
-  focusText.append("tspan")
-    .text("Fecha:" + formatTime(selectedData.Fecha))
-    .attr("x", x(selectedData.Fecha)+15)
-    .attr("y", y(selectedData.Muertes)+10)
-  }
-
-  //Cuando el mouse de desplaza fuera del area del grafico el texto desaparece
-  function mouseout() {
-  focus.style("opacity", 0)
-  focusText.style("opacity", 0)
-  }
-
-
-  // Al finalizar la carga del grafico, se generara tambien la carga del dataset en formato de tabla, mismo que se mostrara en un tab separado
-  // dentro de la pagina web.
-  Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
-  })
-}
+    
+    
+    
+    
+    d3.csv("https://raw.githubusercontent.com/AlfredoAbarca/UnirHerrViz/main/Tarea_1/data/All_MX_Covid_Sumarized.csv",
+       // Lectura del dataset que contiene los datos para este grafico
+       function(d){
+        return { Fecha : d3.timeParse("%Y-%m-%d")(d.Fecha), Muertes : d.Muertes }
+      }).then(
+    
+      //Ya con los datos se realizara la definicion de los limites del grafico.
+      
+      function(data) {
+    
+    
+        
+        //Se genera la escala del eje de las X de este grafico
+        const x = d3.scaleTime()
+          .domain(d3.extent(data, function(d) { return d.Fecha; }))
+          .range([ 0, width ]);
+        svg.append("g")
+          .attr("transform", `translate(0, ${height})`)
+          .call(d3.axisBottom(x));
+        //Se agrega una etiqueta con el nombre de la representacion de los datos del eje
+          svg.append("text")     
+          .attr("x", 400 )
+          .attr("y",  330 )
+          .style("text-anchor", "middle")
+          .text("Fecha");
+    
+        //Se genera ahora la escala del eje de las Y de este grafico
+        const y = d3.scaleLinear()
+          .domain([0, 400000])
+          .range([ height, 0 ]);
+        svg.append("g")
+          .call(d3.axisLeft(y));
+        //Se genera la etiqueta de la representacion del la escala del eje de las Y.
+          svg.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .text("Defunciones");
+    
+    
+      //Esta funcion permite definir el valor mas cercano al eje de las X de la posicion del mouse
+      var bisect = d3.bisector(function(d) { return d.Fecha; }).left;
+    
+      //Este segmento genera el circulo que se dibijara al desplazar el mouse a traves de la linea de tendencia generada
+      //este circulo servira para mostrar la etiqueta o tooltip con el valor a lo largo del tiempo.
+      var focus = svg
+        .append('g')
+        .append('circle')
+          .style("fill", "none")
+          .attr("stroke", "black")
+          .attr('r', 8.5)
+          .style("opacity", 50)
+    
+      //Se genera el texto que viajara a lo largo de la curva tan pronto se genere el tooltip 
+      var focusText = svg
+        .append('g')
+        .append('text')
+          .style("font-size", "10px")
+          .style("opacity", 0)
+          .attr("text-anchor", "left")
+          .attr("alignment-baseline", "middle")
+    
+        //Se genera la linea de tendencia principal del grafico 
+        svg.append("path")
+          .datum(data)
+          .attr("fill", "none")
+          .attr("stroke", "steelblue")
+          .attr("stroke-width", 1.5)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.Fecha) })
+            .y(function(d) { return y(d.Muertes) })
+            )
+     // Genera un objeto de tipo rect que cubrira el area del grafico y mismo que obtendra los eventos de movimiento del mouse. 
+     // lo anterior para poder generar el tooltip que se desplazara a lo largo de la linea del grafico
+     svg
+     .append('rect')
+     .style("fill", "none")
+     .style("pointer-events", "all")
+     .attr('width', width)
+     .attr('height', height)
+     .on('mouseover', mouseover)
+     .on('mousemove', mousemove)
+     .on('mouseout', mouseout);
+    
+    
+    // Eventos del mouse al pasar sobre el grafico. 
+    
+    function mouseover() {
+     focus.style("opacity", 1)
+     focusText.style("opacity",1)
+    }
+    
+    function mousemove() {
+     //Cuando el mouse se desplaza por el grafico, se obtienen las coordenadas X y Y del grafico para tratar de ubicar el tooltip mostrado a lo largo de la linea de grafico principal.
+     var x0 = x.invert(d3.pointer(event, this)[0]);
+     var i = bisect(data, x0, 1);
+     const formato = d3.format(",");
+     const formatTime = d3.timeFormat("%B %d, %Y");
+     selectedData = data[i]
+     focus
+       .attr("cx", x(selectedData.Fecha))
+       .attr("cy", y(selectedData.Muertes))
+    focusText
+        .html("")
+    focusText.append("tspan")
+       .text("Defunciones:" + formato(selectedData.Muertes))
+       .attr("x", x(selectedData.Fecha)+15)
+       .attr("y", y(selectedData.Muertes))
+    focusText.append("tspan")
+       .text("Fecha:" + formatTime(selectedData.Fecha))
+       .attr("x", x(selectedData.Fecha)+15)
+       .attr("y", y(selectedData.Muertes)+10)
+     }
+    
+    //Cuando el mouse de desplaza fuera del area del grafico el texto desaparece
+    function mouseout() {
+     focus.style("opacity", 0)
+     focusText.style("opacity", 0)
+    }
+    
+    
+    // Al finalizar la carga del grafico, se generara tambien la carga del dataset en formato de tabla, mismo que se mostrara en un tab separado
+    // dentro de la pagina web.
+    Create_Html_Table("#Grafica2_Tabla",data,['Fecha','Muertes']);
+    })}
 
 function Carga_Grafico_Contagios() {
   //===============================================================================================
@@ -1016,6 +1020,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	var table = d3.select(HtmlDiv_id).append('table');
 	var thead = table.append('thead');
 	var	tbody = table.append('tbody');
+    temp_data=data
 	// Genera los titulos de las columnas de la tabla con base al dataset pasado como parametro.
 	thead.append('tr')
 	  .selectAll('th')
@@ -1030,7 +1035,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 
 	// Genera las filas con cada uno de los registros del dataset
 	var rows = tbody.selectAll('tr')
-	  .data(data)
+	  .data(temp_data)
 	  .enter()
 	  .append('tr');
 
@@ -1039,7 +1044,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	  .data(function (row) {
 	    return columns.map(function (column) {
         if(column == 'Fecha') {
-          row[column] = formatDate(row[column]);
+          //row[column] = formatDate(row[column]); 
         } 
 	      return {column: column, value: row[column]};
 	    });
