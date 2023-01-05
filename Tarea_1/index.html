@@ -119,66 +119,34 @@
       </p>
       <br />
 
-      <!--Primer conjunto de tabs para la grafica de Casos confirmados por día-->
-      <div id="Grafica1_Tab" class="tab">
-        <button
-          class="tablinks"
-          onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab1')"
-          id="Grafica1_btn1"
-        >
-          Gráfica
-        </button>
-        <button
-          class="tablinks"
-          onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab2')"
-        >
-          Tabla
-        </button>
-        <button
-          class="tablinks"
-          onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab3')"
-        >
-          Data Sources
-        </button>
+          <!--Primer conjunto de tabs para la grafica de Casos confirmados por dia-->
+          <div id="Grafica1_Tab" class="tab">
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab1')" id="Grafica1_btn1">Grafica</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab2')">Tabla</button>
+            <button class="tablinks" onclick="openTab(event,'Grafica1_Tab', 'Grafica1_Tab3')">Data Sources</button>
 
-        <!--Contenido de las diversas pestanas de la primer grafica -->
-        <div id="Grafica1_Tab1" class="tabcontent tab-1">
-          <div class="row">
-            <h4>Tendencia de casos confirmados por día</h4>
+            <!--Contenido de las diversas pestanas de la primer grafica -->
+            <div id="Grafica1_Tab1" class="tabcontent tab-1">
+              <div class="row">
+                <h4>Tendencia de casos confirmados por dia</h4>
+              </div>
+              <div id="grafica_contagios" class="svg-container"></div>
+            </div>
+
+            <div id="Grafica1_Tab2" class="tabcontent tab-2">
+              <h3>Tabla de los datos</h3>
+              <div id="Grafica1_Tabla"></div>
+            </div>
+
+            <div id="Grafica1_Tab3" class="tabcontent tab-3">
+              <h3>Fuentes de datos</h3>
+              <p class="centrado">Los datos para realizar esta grafica se encuentran en las siguientes ligas: </p>
+              <br/>
+              <p class="centrado">* COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University<a href="https://github.com/CSSEGISandData/COVID-19"> Aqui</a></p>
+              <p class="centrado"> * Repositorio en Github del equipo 40 de la Unir<a href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"> Aqui</a></p>
+            </div>
           </div>
-          <div id="grafica_contagios" class="svg-container"></div>
-        </div>
-
-        <div id="Grafica1_Tab2" class="tabcontent tab-2">
-          <h3>Tabla de los datos</h3>
-          <div id="Grafica1_Tabla" class="tabla-datos"></div>
-        </div>
-
-        <div id="Grafica1_Tab3" class="tabcontent tab-3">
-          <h3>Fuentes de datos</h3>
-          <p class="centrado">
-            Los datos para realizar esta gráfica se encuentran en las siguientes
-            ligas:
-          </p>
-          <br />
-          <p class="centrado">
-            * COVID-19 Data Repository by the Center for Systems Science and
-            Engineering (CSSE) at Johns Hopkins University<a
-              href="https://github.com/CSSEGISandData/COVID-19"
-            >
-              Aquí</a
-            >
-          </p>
-          <p class="centrado">
-            * Repositorio en Github del equipo 40 de la UNIR<a
-              href="https://github.com/AlfredoAbarca/UnirHerrViz/tree/main/Tarea_1/data"
-            >
-              Aquí</a
-            >
-          </p>
-        </div>
-      </div>
-      <br />
+          <br/>
       <h3>Defunciones</h3>
       <p class="justificado">
         La siguiente gráfica muestra la tendencia del total de defunciones a lo
