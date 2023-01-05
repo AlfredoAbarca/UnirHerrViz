@@ -1091,7 +1091,6 @@ function formatDate(date) {
 }
 
 
-
 //Seleccion de las tabs por defecto de las graficas
 document.getElementById("Grafica1_btn1").click();
 document.getElementById("Grafica2_btn1").click();
