@@ -977,55 +977,7 @@ function openTab(evt,ParentObject, TabName) {
   evt.currentTarget.className += " active";
 }
 
-function Create_Html_Table(HtmlDiv_id, data, columns) {
-//======================================================================
-//
-// Esta funcion, generara una tabla con los datos del dataset que recibe como parametro
-//
-// Recibe:
-//          HtmlDiv_id : El nombre del objeto de tipo DIV donde se creara esta tabla 
-//          data: El objeto del dataset que contiene toda la informacion que se mostrara en la tabla. 
-//          columns: Arreglo de cadenas de caracteres que indican las columnas a mostrarse en la tabla. 
-//
-//======================================================================
-	var table = d3.select(HtmlDiv_id).append('table');
-	var thead = table.append('thead');
-	var	tbody = table.append('tbody');
-	// Genera los titulos de las columnas de la tabla con base al dataset pasado como parametro.
-	thead.append('tr')
-	  .selectAll('th')
-	  .data(columns).enter()
-	  .append('th')
-	    .text(function (column) { return column.replaceAll('_', ' '); })
-        .style("border", "1px black solid")
-        .style("padding", "5px")
-        .style("background-color", "lightgray")
-        .style("font-weight", "bold")
-        .style("text-transform", "uppercase");
 
-	// Genera las filas con cada uno de los registros del dataset
-	var rows = tbody.selectAll('tr')
-	  .data(data)
-	  .enter()
-	  .append('tr');
-
-	// Genera cada una de las celdas para los registros del dataset y los llena con los datos del dataset.
-	var cells = rows.selectAll('td')
-	  .data(function (row) {
-	    return columns.map(function (column) {
-        // if(column == 'Fecha') {
-        //   row[column] = formatDate(row[column]);
-        // } 
-	      return {column: column, value: row[column]};
-	    });
-	  })
-	  .enter()
-	  .append('td')
-	    .text(function (d) { return d.value; })
-        .style("border", "1px black solid")
-        .style("padding", "5px");
-  return table;
-}
 
 /**
  * Esta funcion, generara una tabla con los datos del dataset que recibe como parametro
