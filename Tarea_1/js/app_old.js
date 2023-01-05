@@ -991,6 +991,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	var table = d3.select(HtmlDiv_id).append('table');
 	var thead = table.append('thead');
 	var	tbody = table.append('tbody');
+    temp_data=data
 	// Genera los titulos de las columnas de la tabla con base al dataset pasado como parametro.
 	thead.append('tr')
 	  .selectAll('th')
@@ -1005,7 +1006,7 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 
 	// Genera las filas con cada uno de los registros del dataset
 	var rows = tbody.selectAll('tr')
-	  .data(data)
+	  .data(temp_data)
 	  .enter()
 	  .append('tr');
 
@@ -1013,9 +1014,9 @@ function Create_Html_Table(HtmlDiv_id, data, columns) {
 	var cells = rows.selectAll('td')
 	  .data(function (row) {
 	    return columns.map(function (column) {
-        // if(column == 'Fecha') {
-        //   row[column] = formatDate(row[column]);
-        // } 
+        if(column == 'Fecha') {
+          row[column] = (row[column]);
+        } 
 	      return {column: column, value: row[column]};
 	    });
 	  })
